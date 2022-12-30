@@ -19,7 +19,7 @@ class UserManager(BaseUserManager):
             nickname = nickname,
             name = name,
             location = location,
-            area = area
+            area = area,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -31,7 +31,7 @@ class UserManager(BaseUserManager):
             email,
             password = password,
             nickname = nickname,
-            name = name,
+            name = name
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -42,8 +42,8 @@ class User(AbstractBaseUser):
     email = models.EmailField(default='', max_length=100, null=False, blank=False, unique=True)
     nickname = models.CharField(default='', max_length=100, null=False, blank=False, unique=True)
     name = models.CharField(default='', max_length=100, null=False, blank=False)
-    location = models.CharField(default='', max_length=100, null=False, blank=False)
-    area = models.CharField(default='', max_length=100, null=False, blank=False)
+    location = models.CharField(default="서울", max_length=100, null=False, blank=False, unique=True)
+    area = models.FloatField(default=0, max_length=50, null=False, blank=False, unique=False)
     
     # User 모델의 필수 field
     is_active = models.BooleanField(default=True)    
@@ -55,7 +55,7 @@ class User(AbstractBaseUser):
     # 사용자의 username field는 nickname으로 설정
     USERNAME_FIELD = 'nickname'
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['email', 'name', 'location', 'area']
+    REQUIRED_FIELDS = ['email', 'name', "location", "area"]
 
     def __str__(self):
         return self.nickname
