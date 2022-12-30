@@ -10,6 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
             name=validated_data["name"],
             password=validated_data["password"],
             location=validated_data["location"],
+            # make location button 
+            
             area=validated_data["area"],
         )
         return user
