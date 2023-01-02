@@ -40,8 +40,21 @@ const SignupPage = () => {
     setPassword2(e.target.value)
   }
 
+  const onChangeArea = (e) => {
+    setArea(e.target.value)
+  }
+
+  const onChangeLocation = (e) => {
+    setLocation(e.target.value)
+  }
+
+  const onChangePhone = (e) => {
+    setPhone(e.target.value)
+  }
+
   const onSubmit = (e) => {
     e.preventDefault()
+
 
     const user = {
       email: email,
@@ -50,7 +63,7 @@ const SignupPage = () => {
     }
 
     // 유효성 검사
-    if(password1 !== password2) {
+    if (password1 !== password2) {
       alert('비밀번호와 비밀번호 확인이 일치하지 않습니다')
       return false
     }
@@ -66,6 +79,9 @@ const SignupPage = () => {
           setEmail('')
           setPassword1('')
           setPassword2('')
+          setArea('')
+          setLocation('')
+          setPhone('')
           localStorage.clear()
           setErrors(true)
         }
@@ -108,6 +124,34 @@ const SignupPage = () => {
           pattern='^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*#?&])[a-z\d$@$!%*#?&]{8,16}$'
           required
         />
+        <br />
+        {/* 면적 입력 */}
+        <label htmlFor='area'>면적(평):</label>
+        <Input
+          type='number'
+          value={area}
+          onChange={onChangeArea}
+          required
+        />
+        <br />
+        {/* 위치 입력 */}
+        <label htmlFor='location'>위치:</label>
+        <Input
+          type='text'
+          value={location}
+          onChange={onChangeLocation}
+          required
+        />
+        <br />
+        {/* 전화번호 */}
+        <label htmlFor='phone'>전화번호:</label>
+        <Input
+          type='text'
+          value={phone}
+          onChange={onChangePhone}
+          required
+        />
+        <br />
         <Input type='submit' size="large" value='가입하기' />
       </form>
     </SignupDiv>
