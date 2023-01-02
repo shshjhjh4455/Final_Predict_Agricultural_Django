@@ -5,5 +5,6 @@ from rest_framework import urls
 urlpatterns = [
     path("signup/", views.UserCreate.as_view()),
     path("api-auth/", include("rest_framework.urls")),
+#path("api-auth/register/", include("rest_framework.registration.urls")),
     path("login/<int:pk>/", views.Detailaccounts.as_view()),
 ]
