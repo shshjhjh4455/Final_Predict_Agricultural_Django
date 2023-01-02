@@ -36,7 +36,7 @@ const LoginPage = () => {
             password: password
         }
 
-        Axios.post('/api/v1/mall/auth/login/', user)
+        Axios.post('/user/login/1/', user)
             .then(res => {
                 if (res.data.key) {
                     localStorage.clear()

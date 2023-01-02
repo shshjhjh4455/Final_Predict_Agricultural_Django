@@ -29,7 +29,7 @@ function NavBar() {
     const handleLogout = () => {
         let token = localStorage.getItem('token')
 
-        Axios.post('/api/v1/mall/auth/logout/', token)
+        Axios.post('/user/login/1/', token)
             .then(res => {
                 localStorage.clear()
                 // 사용하려면 App.js에서 /로 라우팅해야 한다
