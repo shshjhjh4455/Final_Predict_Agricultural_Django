@@ -24,21 +24,6 @@ class UserCreate(generics.CreateAPIView):
 
 
 # @csrf_exempt
-# 로그인
-class LoginView(APIView):
-    permission_classes = (AllowAny,)
-
-    def get(self, request, format=None):
-        auth_logout(request)
-        return Response(status=status.HTTP_200_OK)
-
-    def post(self, request, format=None):
-        data = request.data
-        email = data.get("email", None)
-        password = data.get("password", None)
-        user = authenticate(email=email, password=password)
-        if user is not None:
-            auth_login(request, user)
-            return Response(status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+class Detailaccounts(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
