@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import RegexValidator
 
 class UserManager(BaseUserManager):
     # 일반 user 생성
-    def create_user(self, email, nickname, name, location, area, password=None):
+    def create_user(self, email, nickname, name, location, area, phone,password=None):
         if not email:
             raise ValueError('must have user email')
         if not nickname:
@@ -14,6 +15,8 @@ class UserManager(BaseUserManager):
             raise ValueError('must have user location')
         if not area:
             raise ValueError('must have user area')
+        if not phone:
+            raise ValueError('must have user phone number')
 
         user = self.model(
             email = self.normalize_email(email),
@@ -21,6 +24,7 @@ class UserManager(BaseUserManager):
             name = name,
             location = location,
             area = area,
+            phone = phone,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -64,8 +68,10 @@ class User(AbstractBaseUser):
     email = models.EmailField(default='', max_length=100, null=False, blank=False, unique=True)
     nickname = models.CharField(default='', max_length=100, null=False, blank=False, unique=True)
     name = models.CharField(default='', max_length=100, null=False, blank=False)
-    location = models.CharField(default="서울특별시", max_length=100, null=False, blank=False, unique=True, choices=location_choice)
-    area = models.FloatField(default=0, max_length=50, null=False, blank=False, unique=False)
+    location = models.CharField(default="서울특별시", max_length=100, null=False, blank=False, unique=False, choices=location_choice)
+    area = models.IntegerField(default=0, null=False, blank=False, unique=False)
+    phoneNumberRegex = RegexValidator(regex = r'^01([0|1|6|7|8|9]?)([0-9]{3,4})([0-9]{4})$')
+    phone = models.CharField(validators=[phoneNumberRegex],default="", max_length=13, null=False, blank=False, unique=True)
     
     # User 모델의 필수 field
     is_active = models.BooleanField(default=True)    
@@ -77,7 +83,7 @@ class User(AbstractBaseUser):
     # 사용자의 username field는 nickname으로 설정
     USERNAME_FIELD = 'nickname'
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['email', 'name', "location", "area"]
+    REQUIRED_FIELDS = ['email', 'name', "location", "area", "phone"]
 
     def __str__(self):
         return self.nickname
