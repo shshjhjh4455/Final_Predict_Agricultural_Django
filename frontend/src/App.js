@@ -7,7 +7,7 @@ class App extends Component {
 
   async componentDidMount() {
     try {
-      const res = await fetch('http://127.0.0.1:8000/user/signup');
+      const res = await fetch('http://127.0.0.1:8000/user/login/1/');
       const accounts = await res.json();
       this.setState({
         accounts
