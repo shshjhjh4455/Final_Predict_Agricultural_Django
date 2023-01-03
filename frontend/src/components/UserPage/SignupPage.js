@@ -59,10 +59,7 @@ const SignupPage = () => {
     const user = {
       email: email,
       password1: password1,
-      password2: password2,
-      area: area,
-      location: location,
-      phone: phone,
+      password2: password2
     }
 
     // 유효성 검사
