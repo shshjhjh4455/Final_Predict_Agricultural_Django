@@ -1,34 +1,59 @@
+<!-- using UserInfo -->
 {% extends "base.html" %}
 {% block content %}
 <div class="container my-3">
-    <form method="post" action="{% url 'common:mypage' %}">
+    <form method="post" action="{% url 'common:login' %}">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
         {% include "form_errors.html" %}
+        <!-- 사용자 id, value = user.name -->
         <div class="mb-3">
-            <label for="username">사용자 이름</label>
-            <input type="text" class="form-control" name="username" id="username"
-                   value="{{ form.username.value }}">
+            <label for="username">사용자 ID</label>
+            <input type="text" class="form-control" name="username" id="username" value="{{user.username}}">
+        </div>
+        <!-- location -->
+        <div class="mb-3">
+            <label for="location">지역</label>
+            <select class="form-control" name="location" id="location">
+                <option value="서울">서울</option>
+                <option value="경기">경기</option>
+                <option value="인천">인천</option>
+                <option value="강원">강원</option>
+                <option value="충북">충북</option>
+                <option value="충남">충남</option>
+                <option value="대전">대전</option>
+                <option value="세종">세종</option>
+                <option value="전북">전북</option>
+                <option value="전남">전남</option>
+                <option value="광주">광주</option>
+                <option value="경북">경북</option>
+                <option value="경남">경남</option>
+                <option value="대구">대구</option>
+                <option value="울산">울산</option>
+                <option value="부산">부산</option>
+                <option value="제주">제주</option>
+            </select>
+        </div>
+        <!-- area 면적 (단위: 에이커) -->
+        <div class="mb-3">
+            <label for="area">면적</label>
+            <input type="text" class="form-control" name="area" id="area"
+                value="{{ form.area.value|default_if_none:'' }}">
+        </div>
+        <!-- phone number -->
+        <div class="mb-3">
+            <label for="phone">전화번호</label>
+            <input type="text" class="form-control" name="phone" id="phone"
+                value="{{ form.phone.value|default_if_none:'' }}">
+        </div>
+        <!-- email -->
         <div class="mb-3">
             <label for="email">이메일</label>
             <input type="text" class="form-control" name="email" id="email"
-                   value="{{ form.email.value|default_if_none:'' }}">
+                value="{{ form.email.value|default_if_none:'' }}">
         </div>
-        <div class="mb-3">
-            <label for="password1">지역</label>
-            <input type="text" class="form-control" name="location" id="location"
-                   value="{{ form.location.value|default_if_none:'서울' }}">
-        </div>
-        <div class="mb-3">
-            <label for="password1">재배면적</label>
-            <input type="text" class="form-control" name="area" id="area"
-                   value="{{ form.area.value|default_if_none:'' }}">
-        </div>
-        <div class="mb-3">
-            <label for="password1">전화번호</label>
-            <input type="text" class="form-control" name="phone" id="phone"
-                   value="{{ form.phone.value|default_if_none:'' }}">
-        </div>
-        <button type="submit" class="btn btn-primary">수정하기</button>
+        <!-- 정보 수정하기 버튼 -->
+        <button type="submit" class="btn btn-primary">정보 수정하기</button>
     </form>
 </div>
 {% endblock %}
