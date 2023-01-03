@@ -17,54 +17,54 @@ const MenuList = styled.div`
 
 function NavBar() {
 
-    const [auth, setAuth] = useState('')
-  
-    useEffect(() => {
-      if (localStorage.getItem('token') !== null) {
-        setAuth(true)
-      }
-    }, [])
-  
-    // fetch to axios 수정 
-    const handleLogout = () => {
-      let token = localStorage.getItem('token')
-  
-      Axios.post('/user/auth-api/logout/', token)
-        .then(res => {
-          localStorage.clear()
-          // 사용하려면 App.js에서 /로 라우팅해야 한다
-          window.location.replace('/')
-        });
+  const [auth, setAuth] = useState('')
+
+  useEffect(() => {
+    if (localStorage.getItem('token') !== null) {
+      setAuth(true)
     }
-  
-    return(
-      <div>
-        <MenuList>
-          <Menu>
-            { auth ?
-              <Menu.Item key="logout" onClick={handleLogout}>
-                로그아웃
-              </Menu.Item>
-              :
-              <Menu.Item key="signin">
-                <Link to="/login">
-                로그인
-                </Link>
-              </Menu.Item>
-            }
-            { auth ?
-              <></>
-            :
-              <Menu.Item key="signup">
-                <Link to="/signup">
-                회원가입
-                </Link>
-              </Menu.Item>
-            }
-          </Menu>
-        </MenuList>
-      </div>
-    )
+  }, [])
+
+  // fetch to axios 수정 
+  const handleLogout = () => {
+    let token = localStorage.getItem('token')
+
+    Axios.post('/user/auth-api/logout/', token)
+      .then(res => {
+        localStorage.clear()
+        // 사용하려면 App.js에서 /로 라우팅해야 한다
+        window.location.replace('/')
+      });
   }
-  
-  export default NavBar;
+
+  return (
+    <div>
+      <MenuList>
+        <Menu>
+          {auth ?
+            <Menu.Item key="logout" onClick={handleLogout}>
+              로그아웃
+            </Menu.Item>
+            :
+            <Menu.Item key="signin">
+              <Link to="/login">
+                로그인
+              </Link>
+            </Menu.Item>
+          }
+          {auth ?
+            <></>
+            :
+            <Menu.Item key="signup">
+              <Link to="/signup">
+                회원가입
+              </Link>
+            </Menu.Item>
+          }
+        </Menu>
+      </MenuList>
+    </div>
+  )
+}
+
+export default NavBar;
