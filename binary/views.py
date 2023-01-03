@@ -8,7 +8,8 @@ from rest_framework.response import Response
 class Prediction(APIView):
     def post(self, request):
         #data = request.data
-        #작년 데이터 불러오기
+        # 사용자가 입력한 데이터를 받아옴, location은 사용자가 입력한 값
+        location = request.data['location']
         age= request.GET.get('age')
         gender = request.GET.get('gender')
         bp = request.GET.get('bp')
@@ -20,3 +21,4 @@ class Prediction(APIView):
         response_dict = {"Predicted drug": PredictionMade}
         print(response_dict)
         return Response(response_dict, status=200)
+
