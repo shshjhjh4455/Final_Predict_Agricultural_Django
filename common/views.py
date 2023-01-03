@@ -18,5 +18,6 @@ def signup(request):
     return render(request, 'common/signup.html', {'form': form})
 
 def mypage(request):
-    return render(request, 'common/mypage.html')
+    form = UserForm(request.POST)
+    return render(request, 'common/mypage.html', {'form': form})
     
