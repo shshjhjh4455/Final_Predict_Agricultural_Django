@@ -50,7 +50,7 @@
         <div class="mb-3">
             <label for="email">이메일</label>
             <input type="text" class="form-control" name="email" id="email"
-                value="{{ form.email.value|default_if_none:'' }}">
+                value="{{user.email}}">
         </div>
         <!-- 정보 수정하기 버튼 -->
         <button type="submit" class="btn btn-primary">정보 수정하기</button>
