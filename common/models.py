@@ -10,8 +10,4 @@ class UserInfo(models.Model):
     location = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.user.username, self.phone, self.area, self.location
-
-
-
-        
+        return self.user.username

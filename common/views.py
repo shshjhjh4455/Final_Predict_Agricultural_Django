@@ -1,12 +1,17 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
+<<<<<<< HEAD
 from django.contrib.auth.models import User
 from django.contrib.auth import logout as auth_logout
 from common.models import UserInfo
+=======
+from common.forms import UserForm
+>>>>>>> parent of 591a96a9 (make user info)
 
 
 def signup(request):
     if request.method == "POST":
+<<<<<<< HEAD
         username = request.POST["username"]
         password = request.POST["password"]
         email = request.POST["email"]
@@ -19,6 +24,16 @@ def signup(request):
         user_info = UserInfo(user=user, area=area, location=location, phone=phone)
         user_info.save()
         return redirect("common:login")
+=======
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)  # 사용자 인증
+            login(request, user)  # 로그인
+            return redirect('index')
+>>>>>>> parent of 591a96a9 (make user info)
     else:
         return render(request, "common/signup.html")
 
