@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "config.settings",
+    "rest_framework",
+    "corsheaders",
     "common.apps.CommonConfig",
     "pybo.apps.PyboConfig",
     "django.contrib.admin",

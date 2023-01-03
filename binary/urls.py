@@ -4,7 +4,7 @@ from . import views
 
 app_name = "binary"
 
+
 urlpatterns = [
-    #path('admin/', admin.site.urls),
-    path('binary/', views.Prediction.as_view(), name="binary")
+    path("binary/", views.Prediction.as_view(), name="binary"),
 ]
