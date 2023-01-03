@@ -50,6 +50,7 @@ class Prediction(APIView):
                     rain3,
                     sun3,
                 ]
+                # [7.30,19.80,-1.70,53.9,390.280,14.1,28.00,3.80,38.50,496.970,17.7,28.50,8.10,97.70,560.500]
             ]
         )
         response_dict = {"Predicted drug": PredictionMade}
