@@ -14,3 +14,4 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     path("mypage/", views.mypage, name="mypage"),
 ]
+                                                                                                                                                                                                                                             ㅑ  ㅅ               ㅑ                ㅑ ㅑㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑㅑ  ㅑㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ ㅑ             ㅛ                         

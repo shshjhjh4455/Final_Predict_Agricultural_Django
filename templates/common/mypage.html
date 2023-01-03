@@ -37,7 +37,7 @@
         <!-- area 면적 (단위: 에이커) -->
         <div class="mb-3">
             <label for="area">면적</label>
-            <input type="text" class="form-control" name="area" id="area"
+            <input type="number" class="form-control" name="area" id="area"
                 value="{{ form.area.value|default_if_none:'' }}">
         </div>
         <!-- phone number -->
