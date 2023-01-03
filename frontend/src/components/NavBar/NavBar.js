@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, Button } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
 import { Axios } from 'axios';
-=======
-import Axios from 'axios';	// 추가
->>>>>>> parent of b674aa4a (update)
 
 const MenuList = styled.div`
   display: flex;
@@ -22,7 +18,6 @@ const MenuList = styled.div`
 function NavBar() {
 
     const [auth, setAuth] = useState('')
-<<<<<<< HEAD
   
     useEffect(() => {
       if (localStorage.getItem('token') !== null) {
@@ -73,55 +68,3 @@ function NavBar() {
   }
   
   export default NavBar;
-=======
-
-    useEffect(() => {
-        if (localStorage.getItem('token') !== null) {
-            setAuth(true)
-        }
-    }, [])
-
-    // fetch to axios 수정 
-    const handleLogout = () => {
-        let token = localStorage.getItem('token')
-
-        Axios.post('/api/v1/mall/auth/logout/', token)
-            .then(res => {
-                localStorage.clear()
-                // 사용하려면 App.js에서 /로 라우팅해야 한다
-                window.location.replace('/')
-            });
-    }
-
-    return (
-        <div>
-            <MenuList>
-                <Menu>
-                    {auth ?
-                        <Menu.Item key="logout" onClick={handleLogout}>
-                            로그아웃
-                        </Menu.Item>
-                        :
-                        <Menu.Item key="signin">
-                            <Link to="/login">
-                                로그인
-                            </Link>
-                        </Menu.Item>
-                    }
-                    {auth ?
-                        <></>
-                        :
-                        <Menu.Item key="signup">
-                            <Link to="/signup">
-                                회원가입
-                            </Link>
-                        </Menu.Item>
-                    }
-                </Menu>
-            </MenuList>
-        </div>
-    )
-}
-
-export default NavBar;
->>>>>>> parent of b674aa4a (update)
