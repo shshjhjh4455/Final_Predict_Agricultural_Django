@@ -3,70 +3,41 @@ import joblib
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import PredictionMade
-from .serializers import PredictionMadeSerializer
 from rest_framework import viewsets
 from rest_framework import permissions
+import numpy as np
+import pickle
+#MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
+#model = joblib.load(MODEL_FILE)
 
-MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
-model = joblib.load(MODEL_FILE)
-
-
-class PredictionMadeViewSet(viewsets.ModelViewSet):
-    queryset = PredictionMade.objects.all()
-    serializer_class = PredictionMadeSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-
-# def index(request):
-#     return render(request, "recommend/index.html")
-
-
-# def predict(request):
-#     return render(request, "recommend/predict.html")
-
+def predict(request):
+    return render(request, 'recommend/predict.html')
 
 def result(request):
-    avr1 = request.GET["avr1"]
-    max1 = request.GET["max1"]
-    min1 = request.GET["min1"]
-    rain1 = request.GET["rain1"]
-    sun1 = request.GET["sun1"]
-    avr2 = request.GET["avr2"]
-    max2 = request.GET["max2"]
-    min2 = request.GET["min2"]
-    rain2 = request.GET["rain2"]
-    sun2 = request.GET["sun2"]
-    avr3 = request.GET["avr3"]
-    max3 = request.GET["max3"]
-    min3 = request.GET["min3"]
-    rain3 = request.GET["rain3"]
-    sun3 = request.GET["sun3"]
-    data = [
-        [
-            float(avr1),
-            float(max1),
-            float(min1),
-            float(rain1),
-            float(sun1),
-            float(avr2),
-            float(max2),
-            float(min2),
-            float(rain2),
-            float(sun2),
-            float(avr3),
-            float(max3),
-            float(min3),
-            float(rain3),
-            float(sun3),
-        ]
-    ]
-    result = model.predict(data)
-    if result[0] == 0:
-        result = "배추가 잘 자라지 않을 것 같습니다."
+    sc = pickle.load(open('./model/xgb_baechoo_bin_classify_jinhyeok.pickle', 'rb'))
+    model = joblib.load(open('./model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl', 'rb'))
+
+    val1 = float(request.GET['avr1']),
+    val2 = float(request.GET['max1']),
+    val3 = float(request.GET['min1']),
+    val4 = float(request.GET['rain1']),
+    val5 = float(request.GET['sun1']),
+    val6 = float(request.GET['avr2']),
+    val7 = float(request.GET['max2']),
+    val8 = float(request.GET['min2']),
+    val9 = float(request.GET['rain2']),
+    val10 = float(request.GET['sun2']),
+    val11 = float(request.GET['avr3']),
+    val12 = float(request.GET['max3']),
+    val13 = float(request.GET['min3']),
+    val14 = float(request.GET['rain3']),
+    val15 = float(request.GET['sun3']),
+    
+    input_features = np.array([val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15])
+    pred = model.predict(sc.transform(input_features.reshape(1, -1)))
+    result1 = pred
+    if pred == [0]:
+        result1 = "배추가 잘 자라지 않을 것 같습니다."
     else:
-        result = "배추가 잘 자라실 것 같습니다."
-    return render(request, "recommend/result.html", {"result": result})
+        result1 = "배추가 잘 자라실 것 같습니다."
+    return render(request, 'recommend/result.html', {'result_pred': result1})
