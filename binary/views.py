@@ -1,6 +1,19 @@
 import numpy as np
 import pandas as pd
 from .apps import *
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+import numpy as np
+import pandas as pd
+from .apps import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -10,27 +23,28 @@ class Prediction(APIView):
         # data = request.data
         # 사용자가 입력한 데이터를 받아옴, location은 사용자가 입력한 값
         # location = request.data['location']
-        avr1 = request.data["avr1"]
-        max1 = request.data["max1"]
-        min1 = request.data["min1"]
-        rain1 = request.data["rain1"]
-        sun1 = request.data["sun1"]
-        avr2 = request.data["avr2"]
-        max2 = request.data["max2"]
-        min2 = request.data["min2"]
-        rain2 = request.data["rain2"]
-        sun2 = request.data["sun2"]
-        avr3 = request.data["avr3"]
-        max3 = request.data["max3"]
-        min3 = request.data["min3"]
-        rain3 = request.data["rain3"]
-        sun3 = request.data["sun3"]
+        avr1 = request.GET.get("avr1")
+        max1 = request.GET.get("max1")
+        min1 = request.GET.get("min1")
+        rain1 = request.GET.get("rain1")
+        sun1 = request.GET.get("sun1")
+        avr2 = request.GET.get("avr2")
+        max2 = request.GET.get("max2")
+        min2 = request.GET.get("min2")
+        rain2 = request.GET.get("rain2")
+        sun2 = request.GET.get("sun2")
+        avr3 = request.GET.get("avr3")
+        max3 = request.GET.get("max3")
+        min3 = request.GET.get("min3")
+        rain3 = request.GET.get("rain3")
+        sun3 = request.GET.get("sun3")
+        dtree = ApiConfig.model
+        # predict using independent variables
 
         """원하는 시기의 3개월 기후 데이터를 feature 값으로 넣어줘야 함
             ex) user가 경기도에 살고, 5월부터 배추 농사를 짓고 싶다고 할 때, 
             해당 월의 전년 5월, 6월, 7월의 3개월 기후 데이터를 가지고 적합 여부를 판단"""
 
-        dtree = ApiConfig.model
         PredictionMade = dtree.predict(
             [
                 [
@@ -50,10 +64,8 @@ class Prediction(APIView):
                     rain3,
                     sun3,
                 ]
-                # [7.30,19.80,-1.70,53.9,390.280,14.1,28.00,3.80,38.50,496.970,17.7,28.50,8.10,97.70,560.500]
             ]
         )
         response_dict = {"Predicted drug": PredictionMade}
         print(response_dict)
-        return Response(response_dict, status=200)
-
+        return render(request, "binary/prediction.html", response_dict)
