@@ -59,6 +59,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 MODEL = os.path.join(BASE_DIR, "model")
 
+MIDEA_URL = "/midea/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",

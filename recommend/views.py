@@ -1,5 +1,14 @@
 import os
 import joblib
+import numpy as np
+import pandas as pd
+import pickle
+import json
+import requests
+import xgboost as xgb
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 from django.db import models
 from django.conf import settings
 from django.shortcuts import render
@@ -17,19 +26,44 @@ from django.core.serializers.xml_serializer import Serializer as XMLSerializer
 from django.core.serializers import serialize
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.serializers.json import Serializer as JSONSerializer
+from django.core.serializers.python import Serializer as PythonSerializer
+from django.core.serializers.xml_serializer import Serializer as XMLSerializer
 
-# Create your views here.
+
 MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
 model = joblib.load(MODEL_FILE)
 
-# avr1,max1,min1,rain1,sun1,avr2,max2,min2,rain2,sun2,avr3,max3,min3,rain3,sun3
+# xgb_baechoo_bin_classify_scaler_jinhyeok.pickle
+SCALER_FILE = os.path.join(
+    settings.MODEL, "xgb_baechoo_bin_classify_scaler_jinhyeok.pickle"
+)
+std = joblib.load(SCALER_FILE)
 
-# predict 결과 값을 html로 보여주는 함수
-@csrf_exempt
-@require_POST
+
+# # predict 결과 값을 html로 보여주는 함수
+
 
 def predict(request):
-    result = model.predict(
-        [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
-    )
-    return render(request, "recommend/predict.html", {"result": result})
+    # pred_test = [
+    #     7.30,
+    #     19.80,
+    #     -1.70,
+    #     53.9,
+    #     390.280,
+    #     14.1,
+    #     28.00,
+    #     3.80,
+    #     38.50,
+    #     496.970,
+    #     17.7,
+    #     28.50,
+    #     8.10,
+    #     97.70,
+    #     560.500,
+    # ]
+    # pred_test = np.array(pred_test).reshape(1, -1)
+    # pred_test = std.transform(pred_test)
+    # predict = model.predict(pred_test)
+    # predict = predict[0]
+    # print(predict)
+    return render(request, "common/recommend.html")
