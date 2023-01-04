@@ -34,10 +34,10 @@ MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pic
 model = joblib.load(MODEL_FILE)
 
 # xgb_baechoo_bin_classify_scaler_jinhyeok.pickle
-SCALER_FILE = os.path.join(
-    settings.MODEL, "xgb_baechoo_bin_classify_scaler_jinhyeok.pickle"
-)
-std = joblib.load(SCALER_FILE)
+# SCALER_FILE = os.path.join(
+#     settings.MODEL, "xgb_baechoo_bin_classify_scaler_jinhyeok.pickle"
+# )
+# std = joblib.load(SCALER_FILE)
 
 
 # # predict 결과 값을 html로 보여주는 함수
