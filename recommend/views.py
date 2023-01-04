@@ -1,3 +1,6 @@
+import os
+import joblib
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import PredictionMade
@@ -5,100 +8,65 @@ from .serializers import PredictionMadeSerializer
 from rest_framework import viewsets
 from rest_framework import permissions
 
+MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
+model = joblib.load(MODEL_FILE)
+
 
 class PredictionMadeViewSet(viewsets.ModelViewSet):
     queryset = PredictionMade.objects.all()
     serializer_class = PredictionMadeSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save()
 
-    def perform_update(self, serializer):
-        serializer.save()
 
-    def perform_destroy(self, serializer):
-        serializer.delete()
+# def index(request):
+#     return render(request, "recommend/index.html")
 
-    def get_queryset(self):
-        queryset = PredictionMade.objects.all()
-        avr1 = self.request.query_params.get("avr1", None)
-        max1 = self.request.query_params.get("max1", None)
-        min1 = self.request.query_params.get("min1", None)
-        rain1 = self.request.query_params.get("rain1", None)
-        sun1 = self.request.query_params.get("sun1", None)
-        avr2 = self.request.query_params.get("avr2", None)
-        max2 = self.request.query_params.get("max2", None)
-        min2 = self.request.query_params.get("min2", None)
-        rain2 = self.request.query_params.get("rain2", None)
-        sun2 = self.request.query_params.get("sun2", None)
-        avr3 = self.request.query_params.get("avr3", None)
-        max3 = self.request.query_params.get("max3", None)
-        min3 = self.request.query_params.get("min3", None)
-        rain3 = self.request.query_params.get("rain3", None)
-        sun3 = self.request.query_params.get("sun3", None)
-        if avr1 is not None:
-            queryset = queryset.filter(avr1=avr1)
-        if max1 is not None:
-            queryset = queryset.filter(max1=max1)
-        if min1 is not None:
-            queryset = queryset.filter(min1=min1)
-        if rain1 is not None:
-            queryset = queryset.filter(rain1=rain1)
-        if sun1 is not None:
-            queryset = queryset.filter(sun1=sun1)
-        if avr2 is not None:
-            queryset = queryset.filter(avr2=avr2)
-        if max2 is not None:
-            queryset = queryset.filter(max2=max2)
-        if min2 is not None:
-            queryset = queryset.filter(min2=min2)
-        if rain2 is not None:
-            queryset = queryset.filter(rain2=rain2)
-        if sun2 is not None:
-            queryset = queryset.filter(sun2=sun2)
-        if avr3 is not None:
-            queryset = queryset.filter(avr3=avr3)
-        if max3 is not None:
-            queryset = queryset.filter(max3=max3)
-        if min3 is not None:
-            queryset = queryset.filter(min3=min3)
-        if rain3 is not None:
-            queryset = queryset.filter(rain3=rain3)
-        if sun3 is not None:
-            queryset = queryset.filter(sun3=sun3)
-        return queryset
 
-    def get_serializer_class(self):
-        if self.action == "list":
-            return PredictionMadeSerializer
-        elif self.action == "create":
-            return PredictionMadeSerializer
-        elif self.action == "retrieve":
-            return PredictionMadeSerializer
-        elif self.action == "update":
-            return PredictionMadeSerializer
-        elif self.action == "partial_update":
-            return PredictionMadeSerializer
-        elif self.action == "destroy":
-            return PredictionMadeSerializer
+# def predict(request):
+#     return render(request, "recommend/predict.html")
 
-    def get_permissions(self):
-        if self.action == "list":
-            return [permissions.AllowAny()]
-        elif self.action == "create":
-            return [permissions.AllowAny()]
-        elif self.action == "retrieve":
-            return [permissions.AllowAny()]
-        elif self.action == "update":
-            return [permissions.AllowAny()]
-        elif self.action == "partial_update":
-            return [permissions.AllowAny()]
-        elif self.action == "destroy":
-            return [permissions.AllowAny()]
-        return [permissions.IsAuthenticatedOrReadOnly()]
 
-    def get_serializer_context(self):
-        context = super(PredictionMadeViewSet, self).get_serializer_context()
-        context.update({"request": self.request})
-        return context
+def result(request):
+    avr1 = request.GET["avr1"]
+    max1 = request.GET["max1"]
+    min1 = request.GET["min1"]
+    rain1 = request.GET["rain1"]
+    sun1 = request.GET["sun1"]
+    avr2 = request.GET["avr2"]
+    max2 = request.GET["max2"]
+    min2 = request.GET["min2"]
+    rain2 = request.GET["rain2"]
+    sun2 = request.GET["sun2"]
+    avr3 = request.GET["avr3"]
+    max3 = request.GET["max3"]
+    min3 = request.GET["min3"]
+    rain3 = request.GET["rain3"]
+    sun3 = request.GET["sun3"]
+    data = [
+        [
+            float(avr1),
+            float(max1),
+            float(min1),
+            float(rain1),
+            float(sun1),
+            float(avr2),
+            float(max2),
+            float(min2),
+            float(rain2),
+            float(sun2),
+            float(avr3),
+            float(max3),
+            float(min3),
+            float(rain3),
+            float(sun3),
+        ]
+    ]
+    result = model.predict(data)
+    if result[0] == 0:
+        result = "배추가 잘 자라지 않을 것 같습니다."
+    else:
+        result = "배추가 잘 자라실 것 같습니다."
+    return render(request, "recommend/result.html", {"result": result})
