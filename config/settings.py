@@ -56,11 +56,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "config.urls"
-MODEL = os.path.join(BASE_DIR, "model")
+# ROOT_URLCONF = "config.urls"
+# MODEL = os.path.join(BASE_DIR, "model")
 
-MIDEA_URL = "/midea/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# MIDEA_URL = "/midea/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 TEMPLATES = [
     {
