@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "config.settings",
     "rest_framework",
     "corsheaders",
     "common.apps.CommonConfig",
@@ -43,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "recommend",
+    "save_csv",
 ]
 
 MIDDLEWARE = [

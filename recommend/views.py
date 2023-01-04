@@ -1,58 +1,104 @@
-import numpy as np
-import pandas as pd
-from .apps import *
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import PredictionMade
+from .serializers import PredictionMadeSerializer
+from rest_framework import viewsets
+from rest_framework import permissions
 
 
-class Prediction(APIView):
-    def post(self, request):
-        # data = request.data
-        # 사용자가 입력한 데이터를 받아옴, location은 사용자가 입력한 값
-        # location = request.data['location']
-        avr1 = request.data["avr1"]
-        max1 = request.data["max1"]
-        min1 = request.data["min1"]
-        rain1 = request.data["rain1"]
-        sun1 = request.data["sun1"]
-        avr2 = request.data["avr2"]
-        max2 = request.data["max2"]
-        min2 = request.data["min2"]
-        rain2 = request.data["rain2"]
-        sun2 = request.data["sun2"]
-        avr3 = request.data["avr3"]
-        max3 = request.data["max3"]
-        min3 = request.data["min3"]
-        rain3 = request.data["rain3"]
-        sun3 = request.data["sun3"]
+class PredictionMadeViewSet(viewsets.ModelViewSet):
+    queryset = PredictionMade.objects.all()
+    serializer_class = PredictionMadeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-        """원하는 시기의 3개월 기후 데이터를 feature 값으로 넣어줘야 함
-            ex) user가 경기도에 살고, 5월부터 배추 농사를 짓고 싶다고 할 때, 
-            해당 월의 전년 5월, 6월, 7월의 3개월 기후 데이터를 가지고 적합 여부를 판단"""
+    def perform_create(self, serializer):
+        serializer.save()
 
-        dtree = ApiConfig.model
-        PredictionMade = dtree.predict(
-            [
-                [
-                    avr1,
-                    max1,
-                    min1,
-                    rain1,
-                    sun1,
-                    avr2,
-                    max2,
-                    min2,
-                    rain2,
-                    sun2,
-                    avr3,
-                    max3,
-                    min3,
-                    rain3,
-                    sun3,
-                ]
-            ]
-        )
-        response_dict = {"Predicted drug": PredictionMade}
-        print(response_dict)
-        return Response(response_dict, status=200)
+    def perform_update(self, serializer):
+        serializer.save()
 
+    def perform_destroy(self, serializer):
+        serializer.delete()
+
+    def get_queryset(self):
+        queryset = PredictionMade.objects.all()
+        avr1 = self.request.query_params.get("avr1", None)
+        max1 = self.request.query_params.get("max1", None)
+        min1 = self.request.query_params.get("min1", None)
+        rain1 = self.request.query_params.get("rain1", None)
+        sun1 = self.request.query_params.get("sun1", None)
+        avr2 = self.request.query_params.get("avr2", None)
+        max2 = self.request.query_params.get("max2", None)
+        min2 = self.request.query_params.get("min2", None)
+        rain2 = self.request.query_params.get("rain2", None)
+        sun2 = self.request.query_params.get("sun2", None)
+        avr3 = self.request.query_params.get("avr3", None)
+        max3 = self.request.query_params.get("max3", None)
+        min3 = self.request.query_params.get("min3", None)
+        rain3 = self.request.query_params.get("rain3", None)
+        sun3 = self.request.query_params.get("sun3", None)
+        if avr1 is not None:
+            queryset = queryset.filter(avr1=avr1)
+        if max1 is not None:
+            queryset = queryset.filter(max1=max1)
+        if min1 is not None:
+            queryset = queryset.filter(min1=min1)
+        if rain1 is not None:
+            queryset = queryset.filter(rain1=rain1)
+        if sun1 is not None:
+            queryset = queryset.filter(sun1=sun1)
+        if avr2 is not None:
+            queryset = queryset.filter(avr2=avr2)
+        if max2 is not None:
+            queryset = queryset.filter(max2=max2)
+        if min2 is not None:
+            queryset = queryset.filter(min2=min2)
+        if rain2 is not None:
+            queryset = queryset.filter(rain2=rain2)
+        if sun2 is not None:
+            queryset = queryset.filter(sun2=sun2)
+        if avr3 is not None:
+            queryset = queryset.filter(avr3=avr3)
+        if max3 is not None:
+            queryset = queryset.filter(max3=max3)
+        if min3 is not None:
+            queryset = queryset.filter(min3=min3)
+        if rain3 is not None:
+            queryset = queryset.filter(rain3=rain3)
+        if sun3 is not None:
+            queryset = queryset.filter(sun3=sun3)
+        return queryset
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return PredictionMadeSerializer
+        elif self.action == "create":
+            return PredictionMadeSerializer
+        elif self.action == "retrieve":
+            return PredictionMadeSerializer
+        elif self.action == "update":
+            return PredictionMadeSerializer
+        elif self.action == "partial_update":
+            return PredictionMadeSerializer
+        elif self.action == "destroy":
+            return PredictionMadeSerializer
+
+    def get_permissions(self):
+        if self.action == "list":
+            return [permissions.AllowAny()]
+        elif self.action == "create":
+            return [permissions.AllowAny()]
+        elif self.action == "retrieve":
+            return [permissions.AllowAny()]
+        elif self.action == "update":
+            return [permissions.AllowAny()]
+        elif self.action == "partial_update":
+            return [permissions.AllowAny()]
+        elif self.action == "destroy":
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticatedOrReadOnly()]
+
+    def get_serializer_context(self):
+        context = super(PredictionMadeViewSet, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
