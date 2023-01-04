@@ -6,18 +6,12 @@ from rest_framework import permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from .serializer import PredictionMadeSerializer
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.core import serializers
 
-
-<<<<<<< HEAD
-MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
-model = joblib.load(MODEL_FILE)
-
-# using model to predict the result of the data from the user_info.location
-# using user_info.location to search the data from the database() and get the data 
-def predict_result(location):
-    result = model.predict(location)
-    return result
-=======
 
 class PredictionMadeViewSet(viewsets.ModelViewSet):
     queryset = PredictionMade.objects.all()
@@ -26,14 +20,10 @@ class PredictionMadeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
->>>>>>> parent of e2cfe84e (recommend setting)
 
     def perform_update(self, serializer):
         serializer.save()
 
-<<<<<<< HEAD
-
-=======
     def perform_destroy(self, serializer):
         serializer.delete()
 
@@ -119,4 +109,3 @@ class PredictionMadeViewSet(viewsets.ModelViewSet):
         context = super(PredictionMadeViewSet, self).get_serializer_context()
         context.update({"request": self.request})
         return context
->>>>>>> parent of e2cfe84e (recommend setting)
