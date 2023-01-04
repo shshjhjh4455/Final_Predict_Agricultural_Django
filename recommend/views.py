@@ -29,41 +29,41 @@ from django.core.serializers.json import Serializer as JSONSerializer
 from django.core.serializers.python import Serializer as PythonSerializer
 from django.core.serializers.xml_serializer import Serializer as XMLSerializer
 
-
+# xgb_baechoo_bin_classify_jinhyeok.pickle
 MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
-model = joblib.load(MODEL_FILE)
+Model = pickle.load(MODEL_FILE)
 
-# xgb_baechoo_bin_classify_scaler_jinhyeok.pickle
-# SCALER_FILE = os.path.join(
-#     settings.MODEL, "xgb_baechoo_bin_classify_scaler_jinhyeok.pickle"
-# )
-# std = joblib.load(SCALER_FILE)
+# xgb_baechoo_bin_classify_scaler_jinhyeok.pkl
+SCALER_FILE = os.path.join(
+    settings.MODEL, "xgb_baechoo_bin_classify_scaler_jinhyeok.pkl"
+)
+std = joblib.load(SCALER_FILE)
 
 
 # # predict 결과 값을 html로 보여주는 함수
 
 
 def predict(request):
-    # pred_test = [
-    #     7.30,
-    #     19.80,
-    #     -1.70,
-    #     53.9,
-    #     390.280,
-    #     14.1,
-    #     28.00,
-    #     3.80,
-    #     38.50,
-    #     496.970,
-    #     17.7,
-    #     28.50,
-    #     8.10,
-    #     97.70,
-    #     560.500,
-    # ]
-    # pred_test = np.array(pred_test).reshape(1, -1)
-    # pred_test = std.transform(pred_test)
-    # predict = model.predict(pred_test)
-    # predict = predict[0]
-    # print(predict)
+    pred_test = [
+        7.30,
+        19.80,
+        -1.70,
+        53.9,
+        390.280,
+        14.1,
+        28.00,
+        3.80,
+        38.50,
+        496.970,
+        17.7,
+        28.50,
+        8.10,
+        97.70,
+        560.500,
+    ]
+    pred_test = np.array(pred_test).reshape(1, -1)
+    pred_test = std.transform(pred_test)
+    predict = model.predict(pred_test)
+    predict = predict[0]
+    print(predict)
     return render(request, "common/recommend.html")
