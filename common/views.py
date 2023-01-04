@@ -49,10 +49,12 @@ def logout(request):
     return redirect("pybo:index")
 
 
-# 마이페이지
+# 마이페이지에서는 로그인한 사용자의 정보와 common uer_info df를 보여줌
 @login_required(login_url="common:login")
 def mypage(request):
-    return render(request, "common/mypage.html")
+    user = request.user
+    user_info = UserInfo.objects.get(user=user)
+    return render(request, "common/mypage.html", {"user_info": user_info})
 
 
 # 회원탈퇴
