@@ -1,0 +1,14 @@
+<!-- result 값을 표시한다-->
+<!-- Path: templates/common/result.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-{{ result.type }}" role="alert">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
