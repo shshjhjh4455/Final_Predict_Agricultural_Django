@@ -12,8 +12,8 @@
                     <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
                     <!-- 마이페이지 -->
                     <a class="nav-link" href="{% url 'common:mypage' %}">마이페이지</a>
-                    <!-- 부적합 페이지 recommend -->
-                    <a class="nav-link" href="{% url 'recommend:result' %}">부적합 페이지 추천</a>
+                    <!-- 부적합 페이지 binary -->
+                    <!-- <a class="nav-link" href="{% url 'binary:binary' %}">부적합 페이지</a> -->
                     {% else %}
                     <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
                     {% endif %}
