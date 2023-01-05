@@ -1,91 +1,43 @@
+import os
+import joblib
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
-import pickle
-import joblib
-from common.models import UserInfo
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from .models import PredictionInput
-from .forms import PredictForm
-from save_csv.models import baechoo_new
 from rest_framework import viewsets
-import pickle
+from rest_framework import permissions
 import numpy as np
-from django.views.decorators.http import require_POST
+import pickle
+#MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
+#model = joblib.load(MODEL_FILE)
 
-
-@login_required
 def predict(request):
+    return render(request, 'predict.html')
 
-    if request.method == "POST":
-        form = PredictForm(request.POST)
-        if form.is_valid():
-            location = form.cleaned_data.get("location")
-            month = form.cleaned_data.get("month")
-            PredictionInput.objects.create(location=location, month=month)
-            obj = PredictionInput.objects.last()
-            mon2 = obj.month + 1
-            mon3 = obj.month + 2
-            
-            baechoo1 = baechoo_new.objects.get(
-                (baechoo_new.location == obj.location)
-                & (baechoo_new.month == obj.month)
-            )
-            baechoo2 = baechoo_new.objects.get(
-                (baechoo_new.location == obj.location) & (baechoo_new.month == mon2)
-            )
-            baechoo3 = baechoo_new.objects.get(
-                (baechoo_new.location == obj.location) & (baechoo_new.month == mon3)
-            )
+def result(request):
+    sc = pickle.load(open('./model/xgb_baechoo_bin_classify_jinhyeok.pickle', 'rb'))
+    model = joblib.load(open('./model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl', 'rb'))
 
-            obj_list = [baechoo1, baechoo2, baechoo3]
-            input_list = []
-            for i in range(len(obj_list)):
-                input_list.append(obj_list[i].avr)
-                input_list.append(obj_list[i].max)
-                input_list.append(obj_list[i].min)
-                input_list.append(obj_list[i].rain)
-                input_list.append(obj_list[i].sun)
-
-        # example = [
-        #     [
-        #         22.30,
-        #         31.20,
-        #         14.50,
-        #         233.70,
-        #         339.280,
-        #         17.10,
-        #         28.50,
-        #         4.40,
-        #         177.10,
-        #         250.480,
-        #         9.30,
-        #         20.60,
-        #         -1.80,
-        #         77.50,
-        #         246.490,
-        #     ]
-        # ]
-        with open("model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl", "rb") as s:
-            scaler = joblib.load(s)
-            pred_test = np.array(input_list).reshape(1, -1)
-            feature = scaler.transform(pred_test)
-
-        with open("model/xgb_baechoo_bin_classify_jinhyeok.pickle", "rb") as f:
-            model = pickle.load(f)
-            y_p = model.predict(feature)
-
-        user = request.user
-        user_info = UserInfo.objects.get(user=user)
-
-        if y_p == 1:
-            # y_p, user_info를 recommend.html에 넘겨줌
-            return render(
-                request,
-                "common/recommend.html",
-                {"y_p": "배추 농사 재배가 가능합니다.", "user_info": user_info},
-            )
-        else:
-            return render(
-                request, "common/recommend.html", {"y_p": "배추 농사 재배가 불가능합니다."}
-            )
+    val1 = float(request.GET['avr1']),
+    val2 = float(request.GET['max1']),
+    val3 = float(request.GET['min1']),
+    val4 = float(request.GET['rain1']),
+    val5 = float(request.GET['sun1']),
+    val6 = float(request.GET['avr2']),
+    val7 = float(request.GET['max2']),
+    val8 = float(request.GET['min2']),
+    val9 = float(request.GET['rain2']),
+    val10 = float(request.GET['sun2']),
+    val11 = float(request.GET['avr3']),
+    val12 = float(request.GET['max3']),
+    val13 = float(request.GET['min3']),
+    val14 = float(request.GET['rain3']),
+    val15 = float(request.GET['sun3']),
+    
+    input_features = np.array([val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15])
+    pred = model.predict(sc.transform(input_features.reshape(1, -1)))
+    result1 = pred
+    if pred == [0]:
+        result1 = "배추가 잘 자라지 않을 것 같습니다."
+    else:
+        result1 = "배추가 잘 자라실 것 같습니다."
+    return render(request, 'common/recommend.html', {'result_pred': result1})

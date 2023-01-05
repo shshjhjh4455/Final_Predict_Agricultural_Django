@@ -5,5 +5,6 @@ from . import views
 app_name = "recommend"
 
 urlpatterns = [
-    path("predict/", views.predict, name="predict"),
+    path("predict/", views.predict),
+    path("predict/result", views.result),
 ]
