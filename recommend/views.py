@@ -1,22 +1,18 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 import pickle
 import joblib
 from common.models import UserInfo
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from .models import PredictionInput
 from .forms import PredictForm
 from save_csv.models import baechoo_new
-from rest_framework import viewsets
 import pickle
 import numpy as np
-from django.views.decorators.http import require_POST
 
 
-@login_required
+# 사용자로 부터 달과 지역을 입력받아서 예측값을 출력
+@login_required(login_url="common:login")
 def predict(request):
-
     if request.method == "POST":
         form = PredictForm(request.POST)
         if form.is_valid():
@@ -26,7 +22,7 @@ def predict(request):
             obj = PredictionInput.objects.last()
             mon2 = obj.month + 1
             mon3 = obj.month + 2
-            
+
             baechoo1 = baechoo_new.objects.get(
                 (baechoo_new.location == obj.location)
                 & (baechoo_new.month == obj.month)
@@ -39,53 +35,40 @@ def predict(request):
             )
 
             obj_list = [baechoo1, baechoo2, baechoo3]
-            input_list = []
-            for i in range(len(obj_list)):
-                input_list.append(obj_list[i].avr)
-                input_list.append(obj_list[i].max)
-                input_list.append(obj_list[i].min)
-                input_list.append(obj_list[i].rain)
-                input_list.append(obj_list[i].sun)
+            obj_list = [obj_list]
+            obj_list = np.array(obj_list)
+            obj_list = obj_list.reshape(1, 3, 1)
+            print(obj_list)
 
-        # example = [
-        #     [
-        #         22.30,
-        #         31.20,
-        #         14.50,
-        #         233.70,
-        #         339.280,
-        #         17.10,
-        #         28.50,
-        #         4.40,
-        #         177.10,
-        #         250.480,
-        #         9.30,
-        #         20.60,
-        #         -1.80,
-        #         77.50,
-        #         246.490,
-        #     ]
-        # ]
-        with open("model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl", "rb") as s:
-            scaler = joblib.load(s)
-            pred_test = np.array(input_list).reshape(1, -1)
-            feature = scaler.transform(pred_test)
+            with open("model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl", "rb") as s:
+                scaler = joblib.load(s)
+                feature = scaler.transform(obj_list)
 
-        with open("model/xgb_baechoo_bin_classify_jinhyeok.pickle", "rb") as f:
-            model = pickle.load(f)
-            y_p = model.predict(feature)
+            with open("model/xgb_baechoo_bin_classify_jinhyeok.pickle", "rb") as f:
+                model = pickle.load(f)
+                y_p = model.predict(feature)
 
+            if y_p == 1:
+                y_p = "배추 생산이 가능한 지역으로 예측됩니다."
+            else:
+                y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
+
+            user = request.user
+            user_info = UserInfo.objects.get(user=user)
+
+            context = {
+                "user_info": user_info,
+                "form": form,
+                "y_p": y_p,
+            }
+            return render(request, "common/recommend.html", context)
+    else:
+        form = PredictForm()
         user = request.user
         user_info = UserInfo.objects.get(user=user)
-
-        if y_p == 1:
-            # y_p, user_info를 recommend.html에 넘겨줌
-            return render(
-                request,
-                "common/recommend.html",
-                {"y_p": "배추 농사 재배가 가능합니다.", "user_info": user_info},
-            )
-        else:
-            return render(
-                request, "common/recommend.html", {"y_p": "배추 농사 재배가 불가능합니다."}
-            )
+        context = {
+            "user_info": user_info,
+            "form": form,
+            "y_p": None,
+        }
+        return render(request, "common/recommend.html", context)
