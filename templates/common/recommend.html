@@ -6,6 +6,7 @@
 <div class="container my-3">
     <form method="post" action="{% url 'recommend:predict' %}">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
         {% include "form_errors.html" %}
         <!-- location user_info.location-->
         <!-- location -->
@@ -16,7 +17,7 @@
                 <option value="{{user_info.location}}" selected>{{user_info.location}}</option>
                 <option value="서울특별시">서울특별시</option>
                 <option value="부산광역시">부산광역시</option>
-                <option value="대구광역시">대구광역시</option>
+                <option value="부산광역시">대구광역시</option>
                 <option value="인천광역시">인천광역시</option>
                 <option value="광주광역시">광주광역시</option>
                 <option value="대전광역시">대전광역시</option>
@@ -60,7 +61,7 @@
             <!-- 배추 재배 가능 여부 -->
             <div class="mb-3">
                 <label for="cabbage">배추 재배 가능 여부</label>
-                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{y_p}}" readonly>
+                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ obj_test }}" readonly>
             </div>
         </div>
     </form>
