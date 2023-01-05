@@ -4,7 +4,7 @@
 {% block content %}
 <!-- y_p 값을 표시 -->
 <div class="container my-3">
-    <form method="post" >
+    <form method="post" action="{% url 'recommend:predict' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         {% include "form_errors.html" %}
@@ -27,8 +27,9 @@
                 <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ obj_test }}" readonly>
             </div>
             <!-- 추천페이지 버튼 -->
+            <!--<a href="../../common/recommend.html">-->
             <div class="d-flex justify-content-center">
-                <a href="{% url 'recommend:predict' %}"><button type="button" class="btn btn-primary">추천페이지로</button></a>
+                <a href="{% url 'recommend:predict' %}" ><button type="button" class="btn btn-primary">추천페이지로</button></a>
             </div>
         </div>
     </form>
