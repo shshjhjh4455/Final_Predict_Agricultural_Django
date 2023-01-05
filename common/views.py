@@ -1,56 +1,44 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import logout as auth_logout
-from django.contrib.auth import login as auth_login
+from django.shortcuts import render
+import pickle
+import joblib
 from common.models import UserInfo
-from common.forms import UserForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from .models import PredictionInput
+from .forms import PredictForm
+from save_csv.models import baechoo_new
+import pickle
+import numpy as np
 
 
-# signup에서 사용자로 부터 면적, 위치, 전화번호를 받아옴
-def signup(request):
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            phone = form.cleaned_data.get("phone")
-            area = form.cleaned_data.get("area")
-            location = form.cleaned_data.get("location")
-            # NOT NULL constraint failed common_userinfo.user_id
-            UserInfo.objects.create(
-                user=user, phone=phone, area=area, location=location
-            )
-            auth_login(request, user)
-            return redirect("pybo:index")
-    else:
-        form = UserForm()
-    return render(request, "common/signup.html", {"form": form})
-
-
-# 로그인
-def login(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, request.POST)
-        if form.is_valid():
-            auth_login(request, form.get_user())
-            return redirect("pybo:index")
-    else:
-        form = AuthenticationForm()
-    return render(request, "common/login.html", {"form": form})
-
-
-# 로그아웃
-def logout(request):
-    auth_logout(request)
-    return redirect("pybo:index")
-
-
-# 마이페이지에서는 로그인한 사용자의 정보와 common uer_info df를 보여줌
+# 사용자로 부터 달과 지역을 입력받아서 예측값을 출력
 @login_required(login_url="common:login")
-def mypage(request):
-    user = request.user
-    user_info = UserInfo.objects.get(user=user)
-    return render(request, "common/mypage.html", {"user_info": user_info})
+def predict(request):
+    if request.method == "POST":
+        form = PredictForm(request.POST)
+        if form.is_valid():
+            location = form.cleaned_data.get("location")
+            month = form.cleaned_data.get("month")
+            PredictionInput.objects.create(location=location, month=month)
+            obj = PredictionInput.objects.last()
+        
+            bae_test= baechoo_new.objects.get(location= obj.location, month=obj.month)
 
+            user = request.user
+            user_info = UserInfo.objects.get(user=user)
 
-# 회원탈퇴
+            context= {
+                "user_info":user_info,
+                "form":form,
+                "obj_test": bae_test.avr,
+            }
+            return render(request, "common/recommend.html", context)
+    else:
+        form = PredictForm()
+        user = request.user
+        user_info = UserInfo.objects.get(user=user)
+        context = {
+            "user_info": user_info,
+            "form": form,
+            "y_p": None,
+        }
+        return render(request, "common/recommend.html", context)

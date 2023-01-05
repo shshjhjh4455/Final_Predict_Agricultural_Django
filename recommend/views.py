@@ -25,16 +25,19 @@ def predict(request):
 
             baechoo1 = baechoo_new.objects.get(
                 (baechoo_new.location == obj.location)
-                & (baechoo_new.month == obj.month)
+                & (baechoo_new.month == obj.Metamonth)
             )
             baechoo2 = baechoo_new.objects.get(
-                (baechoo_new.location == obj.location) & (baechoo_new.month == mon2)
+                (baechoo_new.location == obj.location) 
+                & (baechoo_new.month == mon2)
             )
             baechoo3 = baechoo_new.objects.get(
-                (baechoo_new.location == obj.location) & (baechoo_new.month == mon3)
+                (baechoo_new.location == obj.location)
+                 & (baechoo_new.month == mon3)
             )
 
             obj_list = [baechoo1, baechoo2, baechoo3]
+            a, b, c = obj_list
             obj_list = [obj_list]
             obj_list = np.array(obj_list)
             obj_list = obj_list.reshape(1, 3, 1)
