@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-3">
+    <form method="post" action="{% url 'recommend:predict' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include "form_errors.html" %}
+        <!-- 사용자 id, value = user.name -->
+        <div class="mb-3">
+            <label for="result">결과값</label>
+            <input type="number" class="form-control" name="result" id="result" value="{{ obj }}" readonly>
+        </div>
+    </form>
+</div>
+{% endblock %}
