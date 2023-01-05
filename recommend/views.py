@@ -1,10 +1,13 @@
 from django.shortcuts import render
+import pickle
+import joblib
 from common.models import UserInfo
 from django.contrib.auth.decorators import login_required
 from .models import PredictionInput
 from .forms import PredictForm
 from save_csv.models import baechoo_new
 import pickle
+import numpy as np
 
 
 # 사용자로 부터 달과 지역을 입력받아서 예측값을 출력
@@ -56,16 +59,13 @@ def predict(request):
             else:
                 y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
 
-
-            user = request.user
-            user_info = UserInfo.objects.get(user=user)
-
             context= {
-                "user_info":user_info,
+                "loc":obj.location,
+                "mon":obj.month,
                 "form":form,
                 "obj_test": y_p,
             }
-            return render(request, "common/recommend.html", context)
+            return render(request, "common/result.html", context)
     else:
         form = PredictForm()
         user = request.user
