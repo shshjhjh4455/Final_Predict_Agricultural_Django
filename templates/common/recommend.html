@@ -4,7 +4,7 @@
 {% block content %}
 <!-- y_p 값을 표시 -->
 <div class="container my-3">
-    <form method="post" action="{% url 'common:login' %}">
+    <form method="post" action="{% url 'recommend:predict' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         {% include "form_errors.html" %}
@@ -53,6 +53,11 @@
                 <option value="11">11월</option>
                 <option value="12">12월</option>
             </select>
+
+            <!-- 제출 버튼 -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">결과 확인하기</button>
+            </div>
             <!-- 배추 재배 가능 여부 -->
             <div class="mb-3">
                 <label for="cabbage">배추 재배 가능 여부</label>

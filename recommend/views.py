@@ -1,43 +1,74 @@
-import os
-import joblib
-from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework import viewsets
-from rest_framework import permissions
-import numpy as np
 import pickle
-#MODEL_FILE = os.path.join(settings.MODEL, "xgb_baechoo_bin_classify_jinhyeok.pickle")
-#model = joblib.load(MODEL_FILE)
+import joblib
+from common.models import UserInfo
+from django.contrib.auth.decorators import login_required
+from .models import PredictionInput
+from .forms import PredictForm
+from save_csv.models import baechoo_new
+import pickle
+import numpy as np
 
+
+# 사용자로 부터 달과 지역을 입력받아서 예측값을 출력
+@login_required(login_url="common:login")
 def predict(request):
-    return render(request, 'predict.html')
+    if request.method == "POST":
+        form = PredictForm(request.POST)
+        if form.is_valid():
+            location = form.cleaned_data.get("location")
+            month = form.cleaned_data.get("month")
+            PredictionInput.objects.create(location=location, month=month)
+            obj = PredictionInput.objects.last()
+            mon2 = obj.month + 1
+            mon3 = obj.month + 2
 
-def result(request):
-    sc = pickle.load(open('./model/xgb_baechoo_bin_classify_jinhyeok.pickle', 'rb'))
-    model = joblib.load(open('./model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl', 'rb'))
+            baechoo1 = baechoo_new.objects.get(
+                (baechoo_new.location == obj.location)
+                & (baechoo_new.month == obj.month)
+            )
+            baechoo2 = baechoo_new.objects.get(
+                (baechoo_new.location == obj.location) & (baechoo_new.month == mon2)
+            )
+            baechoo3 = baechoo_new.objects.get(
+                (baechoo_new.location == obj.location) & (baechoo_new.month == mon3)
+            )
 
-    val1 = float(request.GET['avr1']),
-    val2 = float(request.GET['max1']),
-    val3 = float(request.GET['min1']),
-    val4 = float(request.GET['rain1']),
-    val5 = float(request.GET['sun1']),
-    val6 = float(request.GET['avr2']),
-    val7 = float(request.GET['max2']),
-    val8 = float(request.GET['min2']),
-    val9 = float(request.GET['rain2']),
-    val10 = float(request.GET['sun2']),
-    val11 = float(request.GET['avr3']),
-    val12 = float(request.GET['max3']),
-    val13 = float(request.GET['min3']),
-    val14 = float(request.GET['rain3']),
-    val15 = float(request.GET['sun3']),
-    
-    input_features = np.array([val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15])
-    pred = model.predict(sc.transform(input_features.reshape(1, -1)))
-    result1 = pred
-    if pred == [0]:
-        result1 = "배추가 잘 자라지 않을 것 같습니다."
+            obj_list = [baechoo1, baechoo2, baechoo3]
+            obj_list = [obj_list]
+            obj_list = np.array(obj_list)
+            obj_list = obj_list.reshape(1, 3, 1)
+            print(obj_list)
+
+            with open("model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl", "rb") as s:
+                scaler = joblib.load(s)
+                feature = scaler.transform(obj_list)
+
+            with open("model/xgb_baechoo_bin_classify_jinhyeok.pickle", "rb") as f:
+                model = pickle.load(f)
+                y_p = model.predict(feature)
+
+            if y_p == 1:
+                y_p = "배추 생산이 가능한 지역으로 예측됩니다."
+            else:
+                y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
+
+            user = request.user
+            user_info = UserInfo.objects.get(user=user)
+
+            context = {
+                "user_info": user_info,
+                "form": form,
+                "y_p": y_p,
+            }
+            return render(request, "common/recommend.html", context)
     else:
-        result1 = "배추가 잘 자라실 것 같습니다."
-    return render(request, 'common/recommend.html', {'result_pred': result1})
+        form = PredictForm()
+        user = request.user
+        user_info = UserInfo.objects.get(user=user)
+        context = {
+            "user_info": user_info,
+            "form": form,
+            "y_p": None,
+        }
+        return render(request, "common/recommend.html", context)
