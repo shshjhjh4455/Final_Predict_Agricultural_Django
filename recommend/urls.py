@@ -1,11 +1,9 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 app_name = "recommend"
 
 urlpatterns = [
-    # path("", views.index, name="index"),
-    # path("predict/", views.predict, name="predict"),
-    path("result/", views.result, name="result"),
+    path("predict/", views.predict, name="predict"),
 ]

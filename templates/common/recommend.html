@@ -1,4 +1,64 @@
-
+<!-- y_p -->
+<!-- Path: templates/common/recommend.html -->
 {% extends "base.html" %}
 {% block content %}
-
+<!-- y_p 값을 표시 -->
+<div class="container my-3">
+    <form method="post" action="{% url 'common:login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include "form_errors.html" %}
+        <!-- location user_info.location-->
+        <!-- location -->
+        <div class="mb-3">
+            <label for="location">지역</label>
+            <select class="form-control" name="location" id="location">
+                <!-- default value = user_info.location -->
+                <option value="{{user_info.location}}" selected>{{user_info.location}}</option>
+                <option value="seoul">서울특별시</option>
+                <option value="busan">부산광역시</option>
+                <option value="daegu">대구광역시</option>
+                <option value="incheon">인천광역시</option>
+                <option value="gwangju">광주광역시</option>
+                <option value="daejeon">대전광역시</option>
+                <option value="ulsan">울산광역시</option>
+                <option value="sejong">세종특별자치시</option>
+                <option value="gyeonggi">경기도</option>
+                <option value="gangwon">강원도</option>
+                <option value="chungbuk">충청북도</option>
+                <option value="chungnam">충청남도</option>
+                <option value="jeonbuk">전라북도</option>
+                <option value="jeonnam">전라남도</option>
+                <option value="gyeongbuk">경상북도</option>
+                <option value="gyeongnam">경상남도</option>
+                <option value="jeju">제주특별자치도</option>
+            </select>
+        </div>
+        <!-- 월 선택 -->
+        <div class="mb-3">
+            <label for="month">월</label>
+            <select class="form-control" name="month" id="month">
+                <!-- default value = user_info.month -->
+                <option value="{{user_info.month}}" selected>{{user_info.month}}</option>
+                <option value="1">1월</option>
+                <option value="2">2월</option>
+                <option value="3">3월</option>
+                <option value="4">4월</option>
+                <option value="5">5월</option>
+                <option value="6">6월</option>
+                <option value="7">7월</option>
+                <option value="8">8월</option>
+                <option value="9">9월</option>
+                <option value="10">10월</option>
+                <option value="11">11월</option>
+                <option value="12">12월</option>
+            </select>
+            <!-- 배추 재배 가능 여부 -->
+            <div class="mb-3">
+                <label for="cabbage">배추 재배 가능 여부</label>
+                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{y_p}}" readonly>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
