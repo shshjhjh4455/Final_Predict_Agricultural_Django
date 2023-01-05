@@ -55,8 +55,18 @@
             </select>
 
         </div>
-
-        <div id="map" style="width:500px;height:400px;"></div>
+       <br>
+        <div id="map">
+            <style>
+                #map {
+                    width: 500px;
+                    height: 400px;
+                }
+                #map {
+                    margin:0 auto;
+                }
+            </style>
+        </div>
 
 
         <script type="text/javascript"
@@ -71,7 +81,7 @@
             var map = new kakao.maps.Map(container, options);           //지도 생성 및 객체 리턴
 
         </script>
-
+        <br>
         <!-- 제출 버튼 -->
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-primary">결과 확인하기</button>
