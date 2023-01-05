@@ -1,0 +1,36 @@
+<!-- y_p -->
+<!-- Path: templates/common/result.html -->
+{% extends "base.html" %}
+{% block content %}
+<!-- y_p 값을 표시 -->
+<div class="container my-3">
+    <form method="post" action="{% url 'recommend:predict' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include "form_errors.html" %}
+        <!-- location user_info.location-->
+        <!-- location -->
+        <div class="mb-3">
+            <!-- 지역 -->
+            <div class="mb-3">
+                <label for="cabbage">지역</label>
+                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ loc }}" readonly>
+            </div>
+            <!-- 월 -->
+            <div class="mb-3">
+                <label for="cabbage">월</label>
+                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ mon }}" readonly>
+            </div>
+            <!-- 배추 재배 가능 여부 -->
+            <div class="mb-3">
+                <label for="cabbage">배추 재배 가능 여부</label>
+                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ obj_test }}" readonly>
+            </div>
+            <!-- 추천페이지 버튼 -->
+            <div class="d-flex justify-content-center">
+                <a href="../../common/recommend.html"><button type="submit" class="btn btn-primary">추천페이지로</button></a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
