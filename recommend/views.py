@@ -7,8 +7,6 @@ import numpy as np
 
 
 
-def predict(request):
-    return render(request, 'common/predict.html')
 
 def result(request):
     sc = pickle.load(open('model/xgb_baechoo_bin_classify_jinhyeok.pickle', 'rb'))
