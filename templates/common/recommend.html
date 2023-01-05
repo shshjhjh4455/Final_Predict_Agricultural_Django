@@ -1,6 +1,8 @@
-<!-- using UserInfo -->
+<!-- y_p -->
+<!-- Path: templates/common/recommend.html -->
 {% extends "base.html" %}
 {% block content %}
+<!-- y_p 값을 표시 -->
 <div class="container my-3">
     <form method="post" action="{% url 'common:login' %}">
         {% csrf_token %}
@@ -9,29 +11,21 @@
         <!-- 사용자 id, value = user.name -->
         <div class="mb-3">
             <label for="username">사용자 ID</label>
-            <input type="text" class="form-control" name="username" id="username" value="{{user.username}}" readonly>
+            <input type="text" class="form-control" name="username" id="username" value="{{y_p}}" readonly>
         </div>
         <!-- email -->
+        <!-- location user_info.location-->
         <div class="mb-3">
-            <label for="email">이메일</label>
-            <input type="text" class="form-control" name="email" id="email" value="{{user.email}}" readonly>
-            <!-- location user_info.location-->
+            <label for="location">위치</label>
+            <input type="text" class="form-control" name="location" id="location" value="{{user_info.location}}"
+                readonly>
+            <!-- area 면적 (단위: 에이커) 양수만 입력  -->
             <div class="mb-3">
-                <label for="location">위치</label>
-                <input type="text" class="form-control" name="location" id="location" value="{{user_info.location}}"
-                    readonly>
-                <!-- area 면적 (단위: 에이커) 양수만 입력  -->
-                <div class="mb-3">
-                    <label for="area">면적</label>
-                    <input type="number" class="form-control" name="area" id="area" value="{{user_info.area}}" readonly>
-                    <!-- phone number -->
-                    <div class="mb-3">
-                        <label for="phone">전화번호</label>
-                        <input type="text" class="form-control" name="phone" id="phone" value="{{user_info.phone}}"
-                            readonly>
-                    </div>
-                </div>
+                <label for="area">면적</label>
+                <input type="number" class="form-control" name="area" id="area" value="{{user_info.area}}" readonly>
+
             </div>
+        </div>
     </form>
 </div>
 {% endblock %}

@@ -56,7 +56,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# ROOT_URLCONF = "config.urls"
+ROOT_URLCONF = "config.urls"
 # MODEL = os.path.join(BASE_DIR, "model")
 
 # MIDEA_URL = "/midea/"
