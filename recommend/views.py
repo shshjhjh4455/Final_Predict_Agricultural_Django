@@ -8,7 +8,7 @@ import numpy as np
 
 
 def predict(request):
-    return render(request, 'recommend/predict.html')
+    return render(request, 'common/predict.html')
 
 def result(request):
     sc = pickle.load(open('model/xgb_baechoo_bin_classify_jinhyeok.pickle', 'rb'))
@@ -37,4 +37,4 @@ def result(request):
         result1 = "배추가 잘 자라지 않을 것 같습니다."
     else:
         result1 = "배추가 잘 자라실 것 같습니다."
-    return render(request, 'recommend/result.html', {'result_pred': result1})
+    return render(request, 'common/result.html', {'result_pred': result1})
