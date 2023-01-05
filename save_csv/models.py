@@ -5,7 +5,7 @@ from django.db import models
 
 class baechoo_new(models.Model):
     # key id 설정
-    # id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     year = models.IntegerField(blank=True, null=True)
     location = models.CharField(max_length=20)
     month = models.IntegerField(blank=True, null=True)
