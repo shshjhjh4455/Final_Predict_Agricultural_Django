@@ -3,7 +3,6 @@ import pickle
 import joblib
 from common.models import UserInfo
 from django.contrib.auth.decorators import login_required
-from .models import PredictionInput
 from .forms import PredictForm
 from save_csv.models import baechoo_new
 import pickle
