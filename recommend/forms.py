@@ -12,3 +12,4 @@ class PredictForm(forms.Form):
             "location",
             "month",
         )
+        
