@@ -72,3 +72,5 @@ def predict(request):
             "y_p": None,
         }
         return render(request, "common/recommend.html", context)
+
+    
