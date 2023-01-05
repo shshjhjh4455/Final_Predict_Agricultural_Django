@@ -64,6 +64,18 @@
                 <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ obj_test }}" readonly>
             </div>
         </div>
+        <div id="map" style="width:500px;height:400px;"></div>
+        <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92e993d41176c18d60b08b50b4c84fa8"></script>
+        <script>
+            var container = document.getElementById('map');
+            var options = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3
+            };
+
+            var map = new kakao.maps.Map(container, options);
+        </script>
     </form>
 </div>
 {% endblock %}
