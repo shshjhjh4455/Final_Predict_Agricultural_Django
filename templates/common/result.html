@@ -1,5 +1,5 @@
 <!-- y_p -->
-<!-- Path: templates/common/result.html -->
+<!-- Path: templates/common/recommend.html -->
 {% extends "base.html" %}
 {% block content %}
 <!-- y_p 값을 표시 -->
@@ -13,26 +13,125 @@
         <div class="mb-3">
             <!-- 지역 -->
             <div class="mb-3">
-                <label for="cabbage">지역</label>
-                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ loc }}" readonly>
+                <label for="location">지역</label>
+                <input type="text" class="form-control" name="location" id="location" value="{{ loc }}" readonly>
             </div>
             <!-- 월 -->
             <div class="mb-3">
-                <label for="cabbage">월</label>
-                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ mon }}" readonly>
-            </div>
-            <!-- 배추 재배 가능 여부 -->
-            <div class="mb-3">
-                <label for="cabbage">배추 재배 가능 여부</label>
-                <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ obj_test }}" readonly>
-            </div>
+                <div class="mb-3">
+                    <labemonth">월</label>
+                        <input type="text" class="form-control" name="month" id="month" value="{{ mon }}" readonly>
+                </div>
+                <!-- 배추재배 가능여부 -->
+                <div class="mb-3">
+                    <label for="cabbage">배추 재배 가능 여부</label>
+                    <input type="text" class="form-control" name="cabbage" id="cabbage" value="{{ obj_test }}" readonly>
+                    <br>
+                    <div id="map">
+                        <style>
+                            #map {
+                                width: 500px;
+                                height: 400px;
+                            }
 
-            <!-- 추천페이지 버튼 -->
-            <!--<a href="../../common/recommend.html">-->
-            <div class="d-flex justify-content-center">
-                <a href="{% url 'recommend:predict' %}" ><button type="button" class="btn btn-primary">추천페이지로</button></a>
-            </div>
-        </div>
+                            #map {
+                                margin: 0 auto;
+                            }
+                        </style>
+                    </div>
+
+
+                    <script type="text/javascript"
+                        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92e993d41176c18d60b08b50b4c84fa8&libraries=services,clusterer,drawing"></script>
+                    <script>
+                        // 지역별 위도, 경도
+                        var locations = {
+                            "서울특별시": {
+                                "lat": 37.566826,
+                                "lng": 126.9786567
+                            },
+                            "부산광역시": {
+                                "lat": 35.1795543,
+                                "lng": 129.0756416
+                            },
+                            "대구광역시": {
+                                "lat": 35.8714354,
+                                "lng": 128.601445
+                            },
+                            "인천광역시": {
+                                "lat": 37.4562557,
+                                "lng": 126.7052062
+                            },
+                            "광주광역시": {
+                                "lat": 35.1595454,
+                                "lng": 126.8526012
+                            },
+                            "대전광역시": {
+                                "lat": 36.3504119,
+                                "lng": 127.3845475
+                            },
+                            "울산광역시": {
+                                "lat": 35.5383773,
+                                "lng": 129.3113592
+                            },
+                            "세종특별자치시": {
+                                "lat": 36.480048,
+                                "lng": 127.289035
+                            },
+                            "경기도": {
+                                "lat": 37.2752685,
+                                "lng": 127.0094272
+                            },
+                            "강원도": {
+                                "lat": 37.8858368,
+                                "lng": 127.7298628
+                            },
+                            "충청북도": {
+                                "lat": 36.6357099,
+                                "lng": 127.4891256
+                            },
+                            "충청남도": {
+                                "lat": 36.633309,
+                                "lng": 126.916969
+                            },
+                            "전라북도": {
+                                "lat": 35.7177971,
+                                "lng": 127.153578
+                            },
+                            "전라남도": {
+                                "lat": 34.810107,
+                                "lng": 126.929506
+                            },
+                            "경상북도": {
+                                "lat": 36.575844,
+                                "lng": 128.505382
+                            },
+                            "경상남도": {
+                                "lat": 35.1795543,
+                                "lng": 128.0756416
+                            },
+                            "제주도": {
+                                "lat": 33.361671,
+                                "lng": 126.529214
+                            }
+                        };
+
+
+                        // locations을 사용하여 지도를 생성합니다
+                        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                            mapOption = {
+                                center: new kakao.maps.LatLng(locations["{{loc}}"].lat, locations["{{loc}}"].lng), // 지도의 중심좌표
+                                level: 8 // 지도의 확대 레벨
+                            };
+
+                        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+                    </script>
+                    <!-- 제출 버튼 -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">결과 확인하기</button>
+                    </div>
+                    <br>
+                </div>
     </form>
 </div>
 {% endblock %}
