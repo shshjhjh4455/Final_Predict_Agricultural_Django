@@ -6,8 +6,7 @@ class PredictForm(forms.Form):
     area = forms.IntegerField(label="월")
 
     class Meta:
-        model = PredictionInput
+        model = PredictionOutput
         fields = (
-            "location",
-            "month",
+            "area",
         )

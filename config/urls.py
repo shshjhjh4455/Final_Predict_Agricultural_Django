@@ -10,5 +10,4 @@ urlpatterns = [
     path("recommend/", include("recommend.urls")),
     path("output/", include("output.urls")),
     path("", base_views.index, name="index"),  # '/' 에 해당되는 path
-    path("output/", include("output.urls"))
 ]
