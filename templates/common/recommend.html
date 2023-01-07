@@ -15,7 +15,7 @@
             <select class="form-control" name="location" id="location">
                 <!-- default value = user_info.location -->
                 <option value="{{user_info.location}}" selected>{{user_info.location}}</option>
-                <option value="서울특별시">서울특별시</option>
+                <option value="제주도">제주도</option>
                 <option value="부산광역시">부산광역시</option>
                 <option value="대구광역시">대구광역시</option>
                 <option value="인천광역시">인천광역시</option>
@@ -54,11 +54,15 @@
                 <option value="12">12월</option>
             </select>
 
-            <!-- 제출 버튼 -->
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">결과 확인하기</button>
-            </div>
         </div>
-    </form>
+
+
+        <!-- 제출 버튼 -->
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">결과 확인하기</button>
+        </div>
+        <br>
+</div>
+</form>
 </div>
 {% endblock %}
