@@ -3,11 +3,10 @@ from .models import PredictionOutput
 
 
 class PredictForm(forms.Form):
-    area = forms.IntegerField()
+    area = forms.IntegerField(label="월")
 
     class Meta:
         model = PredictionOutput
         fields = (
             "area",
         )
-        
