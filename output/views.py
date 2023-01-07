@@ -22,15 +22,15 @@ def predict(request):
 
             model_input_list = np.array(obj_list).reshape(1,-1)
 
-            with open("model/pred_xgb_output_with_area_sc_f", "rb") as f:
+            with open("model/pred_xgb_output_with_area_sc_f.pkl", "rb") as f:
                 scaler_f = joblib.load(f)
                 feature = scaler_f.transform(model_input_list)
 
-            with open("model/pred_xgb_output_with_area", "rb") as m:
+            with open("model/pred_xgb_output_with_area.pkl", "rb") as m:
                 model = joblib.load(m)
                 y_p = model.predict(feature)
 
-            with open("model/pred_xgb_output_with_area_sc_t", "rb") as t:
+            with open("model/pred_xgb_output_with_area_sc_t.pkl", "rb") as t:
                 scaler_t = joblib.load(t)
                 target_pred = scaler_t.inverse_transform(y_p.reshape(-1,1))
 
