@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "save_csv",
     "recommend",
     "output",
+    "predict",
 ]
 
 MIDDLEWARE = [

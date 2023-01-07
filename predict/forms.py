@@ -1,12 +1,12 @@
 from django import forms
-from .models import PredictionOutput
+from .models import Predictiprice
 
 
-class outputForm(forms.Form):
+class PredictpriceForm(forms.Form):
     area = forms.IntegerField()
 
     class Meta:
-        model = PredictionOutput
+        model = Predictiprice
         fields = (
             "area",
         )
