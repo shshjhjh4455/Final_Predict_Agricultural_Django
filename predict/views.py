@@ -8,7 +8,7 @@ from .forms import PredictpriceForm
 from save_csv.models import baechoo_new
 import pickle
 import numpy as np
-
+from django.http import HttpResponse
 
 # 임의의 값
 @login_required(login_url="common:login")

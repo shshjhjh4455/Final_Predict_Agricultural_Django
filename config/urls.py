@@ -10,5 +10,6 @@ urlpatterns = [
     path("recommend/", include("recommend.urls")),
     path("output/", include("output.urls")),
     path("predict/", include("predict.urls")),
+    path("api_checker/", include("api_checker.urls")),
     path("", base_views.index, name="index"),  # '/' 에 해당되는 path
 ]

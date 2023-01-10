@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center mb-2">
+    <div class="col-md-4">
+        <div class="card" >
+            <img src="/static/images/dust.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">수치 확인</h5>
+                <p class="card-text">{{price}}</p>
+                <a href="{% url 'api_checker:detail'%}" class="btn btn-primary">>> 자세히</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

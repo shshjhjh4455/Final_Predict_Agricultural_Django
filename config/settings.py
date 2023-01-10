@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "recommend",
     "output",
     "predict",
+    "api_checker",
 ]
 
 MIDDLEWARE = [
