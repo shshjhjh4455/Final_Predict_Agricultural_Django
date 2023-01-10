@@ -8,9 +8,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    {% for key in dust.keys %}
-                        <th scope="col">{{key}}</th>
-                    {% endfor %}
+                    <th scope="col">{{res}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,38 +22,6 @@
     </div>
 </div>
 <div class="d-flex justify-content-center mb-2">
-    <div class="col-md-6">
-        <canvas id="myChart"></canvas>
-    </div>
-</div>
 
-<script>
-var label = new Array();
-var data = new Array();
-{% for key, value in dust.items %}
-    label.push('{{key}}');
-    data.push('{{value}}');
-{% endfor %}
- 
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'bar',
-
-    // The data for our dataset
-    data: {
-        labels: label,
-        datasets: [{
-            label: '가격',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: data
-        }]
-    },
-
-    // Configuration options go here
-    options: {}
-});
-</script>
 <!-- -------------------------------------------------------- -->
 {% endblock %}
