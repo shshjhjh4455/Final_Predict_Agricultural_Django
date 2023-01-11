@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "save_csv",
     "recommend",
     "output",
+    "api_checker",
 ]
 
 MIDDLEWARE = [
