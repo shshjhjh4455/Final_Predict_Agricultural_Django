@@ -5,37 +5,8 @@ import pandas as pd
 import pickle
 import numpy as np
 import datetime
-
-# def index(request):
-#     res = check_api()
-#     json_ob = json.loads(res)
-#     choice = json_ob["data"]["item"]
-#     year = []
-#     date = []
-#     price = []
-#     for dct in choice :
-#         year.append(dct["yyyy"])
-#         date.append(dct["regday"])
-#         price.append(dct["price"])
-
-#     context = {'year': '2022', 'price': price}
-#     return render(request, 'common/api_checker.html', context)
-
-# def detail(request):
-#     res = check_api()
-#     context = {'dust': res}
-#     return render(request, 'common/api_detail.html', context)
-
-# def index(request):
-#     res = check_api()
-#     context = {'dust': res}
-#     return render(request, 'common/api_checker.html', context)
-
-# def detail(request):
-#     res = check_api()
-#     context = {'dust': res}
-#     return render(request, 'common/api_detail.html', context)
-
+from django.shortcuts import render
+from .models import Result
 
 # 예측하는 페이지 전에 보여주는 페이지.
 def predict_price(days):
@@ -80,19 +51,51 @@ def predict_price(days):
 def index(request):
     return render(request, "common/predict.html")
 
+# def detail(request):
+#     date_string = value.strftime("%Y-%m-%d")
+#     date_object = datetime.date.fromisoformat(date_string)
+#     if not Result.objects.filter(date=date_object).exists():
+#         pred_5 = predict_price(5)
+#         pred_10 = predict_price(10)
+#         pred_20 = predict_price(20)
+#         pred_60 = predict_price(60)
+#         pred_120 = predict_price(120)
+
+#         context = Result.objects.create(date=today,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+#     else:
+#         context = Result.objects.filter(date=today).first()
+#     return render(request, 'common/api_detail.html', {'context': context})
+
+# def detail(request):
+#     date_string = value
+#     date_object = datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+#     if not Result.objects.filter(date=date_object).exists():
+#         pred_5 = predict_price(5)
+#         pred_10 = predict_price(10)
+#         pred_20 = predict_price(20)
+#         pred_60 = predict_price(60)
+#         pred_120 = predict_price(120)
+
+#         context = Result.objects.create(date=date_object,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+#     else:
+#         context = Result.objects.filter
+
 
 def detail(request):
-    pred_5 = predict_price(5)
-    pred_10 = predict_price(10)
-    pred_20 = predict_price(20)
-    pred_60 = predict_price(60)
-    pred_120 = predict_price(120)
+    # date 다름 또는 시간이 4시를 넘거나 또는 생성된 객체가 없거나
+    today = datetime.datetime.now()
+    today_str= today.strftime('%Y-%m-%d')
+    obj= Result.objects.get(pk=1)
 
-    context = {
-        "pred_5": pred_5,
-        "pred_10": pred_10,
-        "pred_20": pred_20,
-        "pred_60": pred_60,
-        "pred_120": pred_120,
-    }
-    return render(request, "common/api_detail.html", context)
+    if not Result.objects.first().exists() or today_str != obj.date:
+        pred_5 = predict_price(5)
+        pred_10 = predict_price(10)
+        pred_20 = predict_price(20)
+        pred_60 = predict_price(60)
+        pred_120 = predict_price(120)
+
+        context = Result.objects.create(date=today_str,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+    else:
+        context = Result.objects.filter(date=today_str).first()
+    return render(request, 'common/api_detail.html', {'context': context})
+
