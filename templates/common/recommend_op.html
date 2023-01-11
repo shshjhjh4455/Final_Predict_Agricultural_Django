@@ -15,17 +15,18 @@
             <select class="form-control" name="area" id="area">
                 <!-- default value = user_info.location -->
                 <option value="{{user_info.area}}" selected>{{user_info.area}}</option>
-                <option value="direct">직접 입력</option>
+                <option value="{{user_info.area}}">직접 입력</option>
+                <!--<br> * 회원가입시 입력한 면적이 아닌 다른 면적 값에 의한 예측값을 확인하고 싶으신 경우, 직접 입력을 선택해 주세요. * </br>--> 
+                <input type="number" id="area" name="area"/>
+                <!-- <input type="number" id="selboxDirect" name="selboxDirect"/> -->
+
             </select>
-            <input type="number" id="selboxDirect" name="selboxDirect"/>
         </div>
 
         <!-- 제출 버튼 -->
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-primary">예측값 확인하기</button>
         </div>
-        <br>
-</div>
-</form>
+    </form>
 </div>
 {% endblock %}
