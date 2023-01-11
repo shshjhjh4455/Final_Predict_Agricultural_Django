@@ -109,4 +109,3 @@ def get_candle_df():
         df = df.T.dropna()
 
     return candle_df_lasts
-
