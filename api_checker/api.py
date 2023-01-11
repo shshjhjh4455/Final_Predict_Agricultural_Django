@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
 import datetime
-import tqdm
+from tqdm import tqdm
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -33,7 +33,7 @@ def check_api():
     end_date = today.strftime("%Y-%m-%d")
     p_productrankcodes = ["04", "05"]
 
-    for rank in tqdm(p_productrankcodes):
+    for rank in p_productrankcodes:
 
         queryParams = "?" + urlencode(
             {
