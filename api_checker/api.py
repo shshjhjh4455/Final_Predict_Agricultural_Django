@@ -108,3 +108,5 @@ def get_candle_df():
     for df in candle_df_lasts.values():
         df = df.T.dropna()
 
+    return candle_df_lasts
+
