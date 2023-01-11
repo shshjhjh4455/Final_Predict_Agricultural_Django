@@ -35,8 +35,6 @@ import json
 
 # 예측하는 페이지 전에 보여주는 페이지.
 def index(request):
-    res = check_api()
-    context = {'dust': res}
     return render(request, 'common/predict.html', context)
 
 def detail(request):
