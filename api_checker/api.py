@@ -8,7 +8,6 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
 import datetime
-import pickle
 
 
 
@@ -87,56 +86,27 @@ def create_candles(df, group_sizes):
             date = temp.iloc[-1].name
             candle_df = candle_df.append({'시가': open_price, '고가': high_price, '저가': low_price, '종가': close_price, '일자': date}, ignore_index=True)
         candles[group_size] = candle_df
+    
     for key, df in candles.items():
         for group_size in group_sizes:
             if key == group_size:
                 df[str(key) + '종가_shift'] = df['종가'].shift(-key)
+        
     for df in candles.values():
         df.set_index('일자', inplace=True)
         df.dropna(inplace=True)
+   
     return candles
 
 
 def get_candle_df():
     candles = create_candles(check_api(), [5, 10, 20, 60, 120])
     candle_df_5, candle_df_10, candle_df_20, candle_df_60, candle_df_120 = (candles[size] for size in [5, 10, 20, 60, 120])
+
     candle_df_lasts = {key: df.iloc[-1] for key, df in candles.items()}
 
     for df in candle_df_lasts.values():
         df = df.T.dropna()
 
-def predict_price(days):
-  # Load the model and scalers
-  model = pickle.load(open('model/price_candle_XGBoost_static_{}days.pkl'.format(days), 'rb'))
-  scaler1 = pickle.load(open('model/price_candle_scaler1_{}.pkl'.format(days), 'rb'))
-  scaler2 = pickle.load(open('model/price_candle_scaler2_{}.pkl'.format(days), 'rb'))
+    return candle_df_lasts
 
-  # Select the last `days` days of data
-  candle_df_last_x = candle_df_lasts[days]
-
-  # Drop the '종가_shift' column
-  candle_df_last_x = candle_df_last_x.drop(f'{days}종가_shift')
-
-  # Convert candle_df_last_x to a Pandas dataframe
-  candle_df_last_x = pd.DataFrame(candle_df_last_x)
-  candle_df_last_x= candle_df_last_x.T
-
-  # Model predict using test_data
-  test_data_sc = scaler1.transform(candle_df_last_x)
-  test_data_sc = pd.DataFrame(test_data_sc, columns=candle_df_last_x.columns, index=candle_df_last_x.index)
-  y_pred = model.predict(test_data_sc)
-
-  # reshape y_pred
-  y_pred = y_pred.reshape(-1,1)
-
-  # Inverse transform y_pred
-  y_pred = scaler2.inverse_transform(y_pred)
-
-  # Return the predicted values
-  return y_pred
-
-print(predict_price(5))
-print(predict_price(10))
-print(predict_price(20))
-print(predict_price(60))
-print(predict_price(120))
