@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .api import check_api
+from .api import check_api, create_candles
 import json
 
 
@@ -36,11 +36,11 @@ import json
 # 예측하는 페이지 전에 보여주는 페이지.
 def index(request):
     res = check_api()
-    context = {'dust': res}
-    return render(request, 'common/predict.html', context)
+    return render(request, 'common/predict.html')
 
 def detail(request):
     res = check_api()
+    res2 = create_candles(res,)
     # res를 dict로 바꿔서 context에 넣어준다.
     context = {'res': res}
     return render(request, 'common/api_detail.html', context)
