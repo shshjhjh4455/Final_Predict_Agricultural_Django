@@ -7,5 +7,3 @@ class Result(models.Model):
     pred_20 = models.FloatField()
     pred_60 = models.FloatField()
     pred_120 = models.FloatField()
-
-
