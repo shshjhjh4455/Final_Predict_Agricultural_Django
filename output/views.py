@@ -1,76 +1,50 @@
 from django.shortcuts import render
-import pickle
-import joblib
-from common.models import UserInfo
 from django.contrib.auth.decorators import login_required
-from .models import PredictionInput
+from common.models import UserInfo
+from .models import PredictionOutput
 from .forms import PredictForm
-from save_csv.models import baechoo_new
-import pickle
+import joblib
+import pandas as pd
 import numpy as np
 
+# Create your views here.
 
-# 사용자로 부터 면적을 입력받아서 예측값을 출력
 @login_required(login_url="common:login")
 def predict(request):
     if request.method == "POST":
         form = PredictForm(request.POST)
         if form.is_valid():
             area = form.cleaned_data.get("area")
-            PredictionInput.objects.create(area=area)
-            obj = PredictionInput.objects.last()
+            PredictionOutput.objects.create(area = area)
+            obj = PredictionOutput.objects.last()
 
-            if obj.month == 11:
-                bae_1 = baechoo_new.objects.get(location=obj.location, month=obj.month)
-                bae_2 = baechoo_new.objects.get(
-                    location=obj.location, month=obj.month + 1
-                )
-                bae_3 = baechoo_new.objects.get(location=obj.location, month=1)
-            elif obj.month == 12:
-                bae_1 = baechoo_new.objects.get(location=obj.location, month=obj.month)
-                bae_2 = baechoo_new.objects.get(location=obj.location, month=1)
-                bae_3 = baechoo_new.objects.get(location=obj.location, month=2)
-            else:
-                bae_1 = baechoo_new.objects.get(location=obj.location, month=obj.month)
-                bae_2 = baechoo_new.objects.get(
-                    location=obj.location, month=obj.month + 1
-                )
-                bae_3 = baechoo_new.objects.get(
-                    location=obj.location, month=obj.month + 2
-                )
+            obj_list=[obj.area]
 
-            obj_list = [bae_1, bae_2, bae_3]
-            model_input_list = []
+            model_input_list = np.array(obj_list).reshape(1,-1)
 
-            for i in range(len(obj_list)):
-                model_input_list.append(obj_list[i].avr)
-                model_input_list.append(obj_list[i].max)
-                model_input_list.append(obj_list[i].min)
-                model_input_list.append(obj_list[i].rain)
-                model_input_list.append(obj_list[i].sun)
+            with open("model/pred_xgb_output_with_area_sc_f.pkl", "rb") as f:
+                scaler_f = joblib.load(f)
+                feature = scaler_f.transform(model_input_list)
 
-            model_input_list = np.array(model_input_list).reshape(1, -1)
-
-            with open("model/xgb_baechoo_bin_classify_scaler_jinhyeok.pkl", "rb") as s:
-                scaler = joblib.load(s)
-                feature = scaler.transform(model_input_list)
-
-            with open("model/xgb_baechoo_bin_classify_jinhyeok.pickle", "rb") as f:
-                model = pickle.load(f)
+            with open("model/pred_xgb_output_with_area.pkl", "rb") as m:
+                model = joblib.load(m)
                 y_p = model.predict(feature)
 
-            if y_p == 1:
-                y_p = "배추 생산이 가능한 지역으로 예측됩니다."
-            else:
-                y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
+            with open("model/pred_xgb_output_with_area_sc_t.pkl", "rb") as t:
+                scaler_t = joblib.load(t)
+                target_pred = scaler_t.inverse_transform(y_p.reshape(-1,1))
 
-            context = {
-                "loc": obj.location,
-                "mon": obj.month,
-                "form": form,
-                "obj_test": y_p,
+            # if y_p == 1:
+            #     y_p = "배추 생산이 가능한 지역으로 예측됩니다."
+            # else:
+            #     y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
+
+            context= {
+                "area":obj.area,
+                "form":form,
+                "obj_test": target_pred,
             }
-            return render(request, "common/result.html", context)
+            return render(request, "common/result_output.html", context)
     else:
         form = PredictForm()
         user = request.user
@@ -78,6 +52,6 @@ def predict(request):
         context = {
             "user_info": user_info,
             "form": form,
-            "y_p": None,
+            "target_pred": None,
         }
-        return render(request, "common/recommend.html", context)
+        return render(request, "common/recommend_op.html", context)

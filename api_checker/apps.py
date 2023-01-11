@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class OutputBaechooConfig(AppConfig):
+class ApiCheckerConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "output"
+    name = "api_checker"
