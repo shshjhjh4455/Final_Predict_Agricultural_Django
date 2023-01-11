@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- ---------------------- [edit] ------------------------ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<div class="row justify-content-center mb-2">
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">{{res}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for value in dust.values %}
+                        <td>{{value}}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="d-flex justify-content-center mb-2">
+
+<!-- -------------------------------------------------------- -->
+{% endblock %}
