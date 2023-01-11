@@ -8,24 +8,15 @@
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         {% include "form_errors.html" %}
-        <!-- location user_info.location-->
-        <!-- location -->
-        <div class="mb-3">
-            <label for="area">면적 (ha)</label>
-            <select class="form-control" name="area" id="area">
-                <!-- default value = user_info.location -->
-                <option value="{{user_info.area}}" selected>{{user_info.area}}</option>
-                <option value="{{user_info.area}}">직접 입력</option>
-                <!--<br> * 회원가입시 입력한 면적이 아닌 다른 면적 값에 의한 예측값을 확인하고 싶으신 경우, 직접 입력을 선택해 주세요. * </br>--> 
-                <input type="number" id="area" name="area"/>
-                <!-- <input type="number" id="selboxDirect" name="selboxDirect"/> -->
-
-            </select>
-        </div>
-
-        <!-- 제출 버튼 -->
-        <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary">예측값 확인하기</button>
+        <!-- 면적 : {{user_info.area}} -->
+        <div class="form-group">
+            <label for="area">면적</label>
+            <input type="text" class="form-control" id="area" name="area" value="{{user_info.area}}">
+            <!-- 제출 버튼 -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">예측값 확인하기</button>
+            </div>
+            <br>
         </div>
     </form>
 </div>
