@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
 import datetime
+import tqdm
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -32,7 +33,7 @@ def check_api():
     end_date = today.strftime("%Y-%m-%d")
     p_productrankcodes = ["04", "05"]
 
-    for rank in p_productrankcodes:
+    for rank in tqdm(p_productrankcodes):
 
         queryParams = "?" + urlencode(
             {
@@ -84,7 +85,7 @@ def check_api():
 
 def create_candles(df, group_sizes):
     candles = {}
-    for group_size in group_sizes:
+    for group_size in tqdm(group_sizes):
         candle_df = pd.DataFrame(columns=["시가", "고가", "저가", "종가", "일자"])
         for i in range(len(df) - group_size):
             temp = df.iloc[i : i + group_size + 1]
