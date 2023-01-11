@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
 import datetime
+from tqdm import tqdm
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -84,7 +85,7 @@ def check_api():
 
 def create_candles(df, group_sizes):
     candles = {}
-    for group_size in group_sizes:
+    for group_size in tqdm(group_sizes):
         candle_df = pd.DataFrame(columns=["시가", "고가", "저가", "종가", "일자"])
         for i in range(len(df) - group_size):
             temp = df.iloc[i : i + group_size + 1]
@@ -118,9 +119,9 @@ def create_candles(df, group_sizes):
 
 
 def get_candle_df():
-    candles = create_candles(check_api(), [1, 2, 3, 4, 5, 10, 20, 60, 120])
+    candles = create_candles(check_api(), [5, 10, 20, 60, 120])
     candle_df_5, candle_df_10, candle_df_20, candle_df_60, candle_df_120 = (
-        candles[size] for size in [1, 2, 3, 4, 5, 10, 20, 60, 120]
+        candles[size] for size in [5, 10, 20, 60, 120]
     )
 
     candle_df_lasts = {key: df.iloc[-1] for key, df in candles.items()}

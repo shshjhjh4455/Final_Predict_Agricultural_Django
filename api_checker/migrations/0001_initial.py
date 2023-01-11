@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="PredictionInput",
+            name="Result",
             fields=[
                 (
                     "id",
@@ -22,8 +22,12 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("location", models.CharField(max_length=20, null=True)),
-                ("month", models.IntegerField(null=True)),
+                ("date", models.DateField()),
+                ("pred_5", models.FloatField()),
+                ("pred_10", models.FloatField()),
+                ("pred_20", models.FloatField()),
+                ("pred_60", models.FloatField()),
+                ("pred_120", models.FloatField()),
             ],
         ),
     ]
