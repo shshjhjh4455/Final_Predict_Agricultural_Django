@@ -12,14 +12,33 @@
                 <li class="nav-item">
                     {% if user.is_authenticated %}
                     <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
+                </li> 
                     <!-- 마이페이지 -->
+                <li>    
                     <a class="nav-link" href="{% url 'common:mypage' %}">마이페이지</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">   
+                        예측페이지
+                    </a>
                     <!-- recommend page -->
-                    <a class="nav-link" href="{% url 'recommend:predict' %}">추천</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="nav-link" href="{% url 'recommend:predict' %}">추천</a></li>
                     <!-- output page -->
-                    <a class="nav-link" href="{% url 'output:predict' %}">생산량</a>
+                        <li><a class="nav-link" href="{% url 'output:oupredict' %}">생산량</a></li>
+                    <!-- predictprice page -->
+                        <li><a class="nav-link" href="{% url 'predict:price' %}">가격예측</a></li>
+                    </ul>
+                    <style>
+                        .dropdown {
+                            position: relative;
+                            display: inline-block;
+                        }
+                    </style>
+                </li>
                     {% else %}
-                    <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
+                    <li>
+                        <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
                     {% endif %}
                 </li>
                 <li>
