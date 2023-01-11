@@ -73,7 +73,7 @@ def check_api():
     
     return df
 
-def create_candles(df, group_sizes):
+def create_candles_long(df, group_sizes):
     candles = {}
     for group_size in group_sizes:
         candle_df = pd.DataFrame(columns=['시가', '고가', '저가', '종가', '일자'])
@@ -100,8 +100,8 @@ def create_candles(df, group_sizes):
 
 
 def get_candle_df():
-    candles = create_candles(check_api(), [5, 10, 20, 60, 120])
-    candle_df_5, candle_df_10, candle_df_20, candle_df_60, candle_df_120 = (candles[size] for size in [5, 10, 20, 60, 120])
+    candles = create_candles_long(check_api(), [60, 120])
+    candle_df_60, candle_df_120 = (candles[size] for size in [60, 120])
 
     candle_df_lasts = {key: df.iloc[-1] for key, df in candles.items()}
 

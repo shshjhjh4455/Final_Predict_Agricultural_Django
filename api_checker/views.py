@@ -5,6 +5,7 @@ import pandas as pd
 import pickle
 import numpy as np
 import datetime
+from .api import get_candle_df
 
 # def index(request):
 #     res = check_api()
@@ -43,6 +44,8 @@ def predict_price(days):
   scaler1 = pickle.load(open('model/price_candle_scaler1_{}.pkl'.format(days), 'rb'))
   scaler2 = pickle.load(open('model/price_candle_scaler2_{}.pkl'.format(days), 'rb'))
 
+  candle_df_lasts= get_candle_df()
+
   # Select the last `days` days of data
   candle_df_last_x = candle_df_lasts[days]
 
@@ -72,9 +75,13 @@ def index(request):
     return render(request, 'common/predict.html')
 
 def detail(request):
-    res = check_api()
+    pred_60= predict_price(60)
+    pred_120= predict_price(120)
     # res를 dict로 바꿔서 context에 넣어준다.
-    context = {'res': res}
+    context = {
+        'pred_60': pred_60, 
+        'pred_120': pred_120
+        }
     return render(request, 'common/api_detail.html', context)
 
 
