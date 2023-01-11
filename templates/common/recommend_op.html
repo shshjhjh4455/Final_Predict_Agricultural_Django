@@ -15,12 +15,22 @@
             <select class="form-control" name="area" id="area">
                 <!-- default value = user_info.location -->
                 <option value="{{user_info.area}}" selected>{{user_info.area}}</option>
-                <option value="{{user_info.area}}">직접 입력</option>
-                <!--<br> * 회원가입시 입력한 면적이 아닌 다른 면적 값에 의한 예측값을 확인하고 싶으신 경우, 직접 입력을 선택해 주세요. * </br>--> 
-                <input type="number" id="area" name="area"/>
-                <!-- <input type="number" id="selboxDirect" name="selboxDirect"/> -->
-
+                <option value="direct">직접 입력</option>
             </select>
+            <input type="number" id="custom-value" name="custom-value" style="display: none;">
+            <input type="submit" value="Submit">
+            <script>
+                var dropdown = document.getElementById("area");
+                var input = document.getElementById("custom-value");
+                
+                dropdown.onchange = function() {
+                    if (dropdown.value === "other") {
+                    input.style.display = "block";
+                    } else {
+                    input.style.display = "none";
+                    }
+                }
+            </script>
         </div>
 
         <!-- 제출 버튼 -->
