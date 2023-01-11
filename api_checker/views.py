@@ -7,6 +7,7 @@ import numpy as np
 import datetime
 from django.shortcuts import render
 from .models import Result
+from datetime import date
 
 # 예측하는 페이지 전에 보여주는 페이지.
 def predict_price(days):
@@ -81,21 +82,34 @@ def index(request):
 #         context = Result.objects.filter
 
 
-def detail(request):
-    # date 다름 또는 시간이 4시를 넘거나 또는 생성된 객체가 없거나
-    today = datetime.datetime.now()
-    today_str= today.strftime('%Y-%m-%d')
-    obj= Result.objects.get(pk=1)
+# def detail(request):
+#     # date 다름 또는 시간이 4시를 넘거나 또는 생성된 객체가 없거나
+#     #today = datetime.datetime.now()
+#     #today_str= today.strftime('%Y-%m-%d')
+#     #obj= Result.objects.get(pk=1)
 
-    if not Result.objects.first().exists() or today_str != obj.date:
+#     # if not Result.objects.first().exists() or today_str != obj.date:
+#     #     pred_5 = predict_price(5)
+#     #     pred_10 = predict_price(10)
+#     #     pred_20 = predict_price(20)
+#     #     pred_60 = predict_price(60)
+#     #     pred_120 = predict_price(120)
+
+#     #     context = Result.objects.create(date=today_str,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+#     # else:
+#     #     context = Result.objects.filter(date=today_str).first()
+#     return render(request, 'common/api_detail.html')
+def detail(request):
+    today = date.today()
+    if not Result.objects.filter(date=today).exists():
         pred_5 = predict_price(5)
         pred_10 = predict_price(10)
         pred_20 = predict_price(20)
         pred_60 = predict_price(60)
         pred_120 = predict_price(120)
 
-        context = Result.objects.create(date=today_str,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+        context = Result.objects.create(date=today,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
     else:
-        context = Result.objects.filter(date=today_str).first()
+        context = Result.objects.filter(date=today).first()
     return render(request, 'common/api_detail.html', {'context': context})
 
