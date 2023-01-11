@@ -5,5 +5,5 @@ from . import views
 app_name = "output"
 
 urlpatterns = [
-    path("oupredict/", views.oupredict, name="oupredict"),
+    path("predict/", views.predict, name="predict"),
 ]
