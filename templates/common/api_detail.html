@@ -6,16 +6,31 @@
 <div class="row justify-content-center mb-2">
     <div class="col-md-12">
         <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">{{context1}}</th>
-                </tr>
-            </thead>
-            
+            <!-- pred 값 출력 -->
+            <tr>
+                <th>5일 후 예상 가격</th>
+                <td>{{ pred_5 }}</td>
+            </tr>
+            <tr>
+                <th>10일 후 예상 가격</th>
+                <td>{{ pred_10 }}</td>
+            </tr>
+            <tr>
+                <th>20일 후 예상 가격</th>
+                <td>{{ pred_20 }}</td>
+            </tr>
+            <tr>
+                <th>60일 후 예상 가격</th>
+                <td>{{ pred_60 }}</td>
+            </tr>
+            <tr>
+                <th>120일 후 예상 가격</th>
+                <td>{{ pred_120 }}</td>
+            </tr>
         </table>
     </div>
 </div>
 <div class="d-flex justify-content-center mb-2">
 
-<!-- -------------------------------------------------------- -->
-{% endblock %}
+    <!-- -------------------------------------------------------- -->
+    {% endblock %}
