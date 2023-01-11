@@ -72,3 +72,41 @@ def check_api():
     df= df.set_index('날짜')
     
     return df
+
+def create_candles(df, group_sizes):
+    candles = {}
+    for group_size in group_sizes:
+        candle_df = pd.DataFrame(columns=['시가', '고가', '저가', '종가', '일자'])
+        for i in range(len(df)-group_size):
+            temp = df.iloc[i:i+group_size+1]
+            open_price = temp.iloc[0]['가격']
+            high_price = temp['가격'].max()
+            low_price = temp['가격'].min()
+            close_price = temp.iloc[-1]['가격']
+            date = temp.iloc[-1].name
+            candle_df = candle_df.append({'시가': open_price, '고가': high_price, '저가': low_price, '종가': close_price, '일자': date}, ignore_index=True)
+        candles[group_size] = candle_df
+    
+    for key, df in candles.items():
+        for group_size in group_sizes:
+            if key == group_size:
+                df[str(key) + '종가_shift'] = df['종가'].shift(-key)
+        
+    for df in candles.values():
+        df.set_index('일자', inplace=True)
+        df.dropna(inplace=True)
+   
+    return candles
+
+
+def get_candle_df():
+    candles = create_candles(check_api(), [5, 10, 20, 60, 120])
+    candle_df_5, candle_df_10, candle_df_20, candle_df_60, candle_df_120 = (candles[size] for size in [5, 10, 20, 60, 120])
+
+    candle_df_lasts = {key: df.iloc[-1] for key, df in candles.items()}
+
+    for df in candle_df_lasts.values():
+        df = df.T.dropna()
+
+    return candle_df_lasts
+
