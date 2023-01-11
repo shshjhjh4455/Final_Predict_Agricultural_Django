@@ -2,7 +2,7 @@ from django import forms
 from .models import PredictionOutput
 
 
-class outputForm(forms.Form):
+class PredictForm(forms.Form):
     area = forms.IntegerField()
 
     class Meta:
