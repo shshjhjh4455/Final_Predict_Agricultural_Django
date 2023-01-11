@@ -98,15 +98,6 @@ def create_candles(df, group_sizes):
    
     return candles
 
-<<<<<<< HEAD
-candles = create_candles(df, [5, 10, 20, 60, 120])
-candle_df_5, candle_df_10, candle_df_20, candle_df_60, candle_df_120 = (candles[size] for size in [5, 10, 20, 60, 120])
-
-candle_df_lasts = {key: df.iloc[-1] for key, df in candles.items()}
-
-for df in candle_df_lasts.values():
-    df = df.T.dropna()
-=======
 
 def get_candle_df():
     candles = create_candles(check_api(), [5, 10, 20, 60, 120])
@@ -119,4 +110,3 @@ def get_candle_df():
 
     return candle_df_lasts
 
->>>>>>> main

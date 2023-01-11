@@ -68,12 +68,8 @@ def predict_price(days):
   return y_pred
 
 def index(request):
-<<<<<<< HEAD
-    return render(request, 'common/predict.html', context)
-=======
     res = check_api()
     return render(request, 'common/predict.html')
->>>>>>> main
 
 def detail(request):
     res = check_api()
