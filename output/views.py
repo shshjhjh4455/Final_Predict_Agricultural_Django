@@ -4,7 +4,6 @@ from common.models import UserInfo
 from .models import PredictionOutput
 from .forms import PredictForm
 import joblib
-import pandas as pd
 import numpy as np
 
 # Create your views here.

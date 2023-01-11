@@ -10,24 +10,27 @@
         {% include "form_errors.html" %}
         <!-- location user_info.location-->
         <!-- location -->
-        <div class="mb-3">
             <!-- 지역 -->
+        <div class="mb-3">
+            <label for="location">면적 (ha)</label>
+        </div>
+        <div class="mb-3">
+            <label for="location">원하는 면적을 입력해주세요</label>
+        </div>    
+            <input type="number" class="form-control" name="area" id="area" value="{{ area }}" readonly>
+            
+        
+            <!-- 생산량 예측 -->
             <div class="mb-3">
-                <label for="location">면적 (ha)</label>
-                <input type="number" class="form-control" name="area" id="area" value="{{ area }}" readonly>
+                <label for="output">예측 생산량 값</label>
+                <input type="text" class="form-control" name="output" id="output" value="{{ obj_test }}" readonly>
+                
+                <!-- 추천페이지 버튼 -->
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'output:predict' %}"><button type="button" class="btn btn-primary">생산량 페이지로</button></a>
+                </div>
+                <br>
             </div>
-                </div>
-                <!-- 생산량 예측 -->
-                <div class="mb-3">
-                    <label for="output">예측 생산량 값</label>
-                    <input type="text" class="form-control" name="output" id="output" value="{{ obj_test }}" readonly>
-                    
-                    <!-- 추천페이지 버튼 -->
-                    <div class="d-flex justify-content-center">
-                        <a href="{% url 'output:predict' %}"><button type="button" class="btn btn-primary">생산량 페이지로</button></a>
-                    </div>
-                    <br>
-                </div>
     </form>
 </div>
 {% endblock %}
