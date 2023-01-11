@@ -82,6 +82,10 @@ def index(request):
 
 
 def detail(request):
+    pred_1 = predict_price(1)
+    pred_2 = predict_price(2)
+    pred_3 = predict_price(3)
+    pred_4 = predict_price(4)
     pred_5 = predict_price(5)
     pred_10 = predict_price(10)
     pred_20 = predict_price(20)
@@ -89,10 +93,15 @@ def detail(request):
     pred_120 = predict_price(120)
 
     context = {
+        "pred_1": pred_1,
+        "pred_2": pred_2,
+        "pred_3": pred_3,
+        "pred_4": pred_4,
         "pred_5": pred_5,
         "pred_10": pred_10,
         "pred_20": pred_20,
         "pred_60": pred_60,
         "pred_120": pred_120,
     }
+    
     return render(request, "common/api_detail.html", context)
