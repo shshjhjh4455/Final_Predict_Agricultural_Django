@@ -40,9 +40,9 @@ def predict(request):
             #     y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
 
             context= {
-                "area":obj.area,
+                "area":area,
                 "form":form,
-                "obj_test": target_pred,
+                "obj_test": int(target_pred[0]),
             }
             return render(request, "common/result_output.html", context)
     else:

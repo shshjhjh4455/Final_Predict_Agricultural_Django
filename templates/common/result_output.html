@@ -16,18 +16,18 @@
                 <label for="location">면적 (ha)</label>
                 <input type="number" class="form-control" name="area" id="area" value="{{ area }}" readonly>
             </div>
+        </div>
+            <!-- 생산량 예측 -->
+            <div class="mb-3">
+                <label for="output">예측 생산량 값 (톤)</label>
+                <input type="text" class="form-control" name="output" id="output" value="{{ obj_test }}" readonly>
+                
+                <!-- 추천페이지 버튼 -->
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'output:predict' %}"><button type="button" class="btn btn-primary">생산량 페이지로</button></a>
                 </div>
-                <!-- 생산량 예측 -->
-                <div class="mb-3">
-                    <label for="output">예측 생산량 값</label>
-                    <input type="text" class="form-control" name="output" id="output" value="{{ obj_test }}" readonly>
-                    
-                    <!-- 추천페이지 버튼 -->
-                    <div class="d-flex justify-content-center">
-                        <a href="{% url 'output:predict' %}"><button type="button" class="btn btn-primary">생산량 페이지로</button></a>
-                    </div>
-                    <br>
-                </div>
+                <br>
+            </div>
     </form>
 </div>
 {% endblock %}
