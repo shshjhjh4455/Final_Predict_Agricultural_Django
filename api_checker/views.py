@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from .api import get_candle_df
+from .api import get_candle_df, make_chart
 import pandas as pd
 import pickle
+import datetime
+import os
 from django.shortcuts import render
 from .models import Result
 from datetime import date
@@ -54,6 +56,11 @@ def detail(request):
     today = date.today()
     tm= localtime(time())
 
+    for root, dirs, files in os.walk("/static/images"):
+        for f in files:
+            if f == "price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png":
+                chart = make_chart()
+
     if not Result.objects.filter(date=today).exists():
         pred_1 = int(predict_price(1)[0])
         pred_2 = int(predict_price(2)[0])
@@ -81,4 +88,5 @@ def detail(request):
 
     else:
         context = Result.objects.last()
+
     return render(request, 'common/api_detail.html', {'context': context})
