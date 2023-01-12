@@ -133,9 +133,15 @@ def chart(request):
     val1= df_5['가격'].to_list()
     val2= df_20['가격'].to_list()
     val3= df['가격'].to_list()
+    idx1= df_5.index.to_list()
+    idx2= df_20.index.to_list()
+    idx3= df.index.to_list()
     context={
         "val1":val1,
         "val2":val2,
         "val3":val3,
+        "idx1":idx1,
+        "idx2":idx2,
+        "idx3":idx3, 
     }
     return render(request, 'common/api_chart.html', context)

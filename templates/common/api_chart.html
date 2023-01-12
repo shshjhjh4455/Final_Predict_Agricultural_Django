@@ -1,137 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- {% extends "base.html" %} -->
 <!-- 1. static 사용 -->
 {% load static %}
 
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- 2. 사이트 html 하단 script 태그 위치 -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/series-label.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    
-    <!-- 3. css 속성 가져오기 -->
-    <link rel="stylesheet" href="{% static 'chart/css/line.css' %}">
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <!-- 2. 사이트 html 하단 script 태그 위치 -->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/series-label.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  
+  <!-- 3. css 속성 가져오기 -->
+  <link rel="stylesheet" href="{% static 'chart/css/line.css' %}">
+  
 </head>
 <body>
-    <!-- 4. 사이트 html 하단 figure 태그 -->
-	<figure class="highcharts-figure">
-        <div id="container"></div>
-        <p class="highcharts-description">
-            금일 16시를 기준으로 금일 데이터가 반영됩니다.
-            (*예시: 1/12일 3시에 생성된 그래프는 1/11일 기준입니다.)
-        </p>
-      </figure>
-      
-      <!-- 5. <script src="{% static 'chart/js/line.js' %}" ></script> -->
-      <!-- 6. script -->
-      <script>
-        Highcharts.chart('container', {
-          chart: {
-            type: 'spline'
-          },
-          title: {
-            text: '일주일 동향'
-          },
-          subtitle: {
-            text: '최근 일주일'
-          },
-          xAxis: {
-            categories: ['5일 전', '4일 전', '3일 전', '2일 전', '1일 전']
-          },
-          yAxis: {
-            title: {
-              text: 'Price'
-            },
-            labels: {
-              formatter: function () {
-                return this.value;
-              }
-            }
-          },
-          tooltip: {
-            crosshairs: true,
-            shared: true
-          },
-          plotOptions: {
-            spline: {
-              marker: {
-                radius: 4,
-                lineColor: '#666666',
-                lineWidth: 1
-              }
-            }
-          },
-          series: [{
-            name: 'Price',
-            marker: {
-              symbol: 'diamond'
-            },
-            data: {{val1}}
+<!-- 4. 사이트 html 하단 figure 태그 -->
+<figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+    This chart shows how symbols and shapes can be used in charts.
+    Highcharts includes several common symbol shapes, such as squares,
+    circles and triangles, but it is also possible to add your own
+    custom symbols. In this chart, custom weather symbols are used on
+    data points to highlight that certain temperatures are warm while
+    others are cold.
+    </p>
+  </figure>
+  
+  <!-- 5. <script src="{% static 'chart/js/line.js' %}" ></script> -->
+  <!-- 6. script -->
+  <script>
+    Highcharts.chart('container', {
+      chart: {
+        type: 'spline'
+      },
+      title: {
+        text: 'Monthly Average Temperature'
+      },
+      subtitle: {
+        text: 'Source: WorldClimate.com'
+      },
+      xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yAxis: {
+        title: {
+          text: 'Temperature'
+        },
+        labels: {
+          formatter: function () {
+            return this.value + '°';
+          }
+        }
+      },
+      tooltip: {
+        crosshairs: true,
+        shared: true
+      },
+      plotOptions: {
+        spline: {
+          marker: {
+            radius: 4,
+            lineColor: '#666666',
+            lineWidth: 1
+          }
+        }
+      },
+      series: [{
+        name: 'Tokyo',
+        marker: {
+          symbol: 'square'
+        },
+        data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, {
+          y: 26.5,
+          marker: {
+            symbol: 'url(https://www.highcharts.com/samples/graphics/sun.png)'
+          }
+        }, 23.3, 18.3, 13.9, 9.6]
 
-          }]
-        });
-      </script>
-      <!-- 4. 사이트 html 하단 figure 태그 -->
-	<figure class="highcharts-figure">
-        <div id="container"></div>
-        <p class="highcharts-description">
-            금일 16시를 기준으로 금일 데이터가 반영됩니다.
-            (*예시: 1/12일 3시에 생성된 그래프는 1/11일 기준입니다.)
-        </p>
-      </figure>
-      
-      <!-- 5. <script src="{% static 'chart/js/line.js' %}" ></script> -->
-      <!-- 6. script -->
-      <script>
-        Highcharts.chart('container', {
-          chart: {
-            type: 'spline'
-          },
-          title: {
-            text: '한 달 동향'
-          },
-          subtitle: {
-            text: '최근 한 달'
-          },
-          xAxis: {
-            categories: ['5일 전', '4일 전', '3일 전', '2일 전', '1일 전']
-          },
-          yAxis: {
-            title: {
-              text: 'Price'
-            },
-            labels: {
-              formatter: function () {
-                return this.value;
-              }
-            }
-          },
-          tooltip: {
-            crosshairs: true,
-            shared: true
-          },
-          plotOptions: {
-            spline: {
-              marker: {
-                radius: 4,
-                lineColor: '#666666',
-                lineWidth: 1
-              }
-            }
-          },
-          series: [{
-            name: 'Price',
-            marker: {
-              symbol: 'diamond'
-            },
-            data: {{val1}}
-
-          }]
-        });
-      </script>
+      }, {
+        name: 'London',
+        marker: {
+          symbol: 'diamond'
+        },
+        data: [{
+          y: 3.9,
+          marker: {
+            symbol: 'url(https://www.highcharts.com/samples/graphics/snow.png)'
+          }
+        }, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+      }]
+    });
+  </script>
 </body>
 </html>
