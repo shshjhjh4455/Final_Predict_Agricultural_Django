@@ -4,6 +4,7 @@ from .api import get_candle_df, make_chart
 from .api import get_candle_df, make_chart
 import pandas as pd
 import pickle
+import os
 from django.shortcuts import render
 from .models import Result
 from datetime import date
