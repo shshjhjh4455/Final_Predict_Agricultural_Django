@@ -7,4 +7,5 @@ app_name = "api_checker"
 urlpatterns = [
     path("index", views.index, name="index"),
     path('detail', views.detail, name='detail'),
+    path('chart', views.chart, name='chart'),
 ]

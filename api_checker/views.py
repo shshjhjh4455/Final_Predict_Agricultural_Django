@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .api import get_candle_df
+from .api import get_candle_df, check_api
 import json
 import pandas as pd
 import pickle
@@ -9,6 +9,7 @@ from .models import Result
 from datetime import date
 from time import time
 from time import localtime
+
 
 # 예측하는 페이지 전에 보여주는 페이지.
 def predict_price(days):
@@ -125,3 +126,16 @@ def detail(request):
         context = Result.objects.last()
     return render(request, 'common/api_detail.html', {'context': context})
 
+def chart(request):
+    df= check_api()
+    df_5= df.tail(5)
+    df_20= df.tail(20)
+    val1= df_5['가격'].to_list()
+    val2= df_20['가격'].to_list()
+    val3= df['가격'].to_list()
+    context={
+        "val1":val1,
+        "val2":val2,
+        "val3":val3,
+    }
+    return render(request, 'common/api_chart.html', context)

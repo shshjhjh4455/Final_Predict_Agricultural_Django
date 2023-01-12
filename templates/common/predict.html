@@ -11,6 +11,10 @@
                 <p class="card-text">{{price}}</p>
                 <a href="{% url 'api_checker:detail'%}" class="btn btn-primary">>> 자세히</a>
             </div>
+            <div class="card-body">
+                <h5 class="card-title">가격 동향</h5>
+                <a href="{% url 'api_checker:chart'%}" class="btn btn-primary">>> 자세히</a>
+            </div>
         </div>
     </div>
 </div>
