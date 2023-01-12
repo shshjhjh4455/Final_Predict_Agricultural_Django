@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 
-from pybo.models import Question
+from furoot.models import Question
 
 
 def index(request):
@@ -20,10 +20,10 @@ def index(request):
     paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     context = {'question_list': page_obj, 'page': page, 'kw': kw}
-    return render(request, 'pybo/question_list.html', context)
+    return render(request, 'furoot/question_list.html', context)
 
 
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     context = {'question': question}
-    return render(request, 'pybo/question_detail.html', context)
+    return render(request, 'furoot/question_detail.html', context)

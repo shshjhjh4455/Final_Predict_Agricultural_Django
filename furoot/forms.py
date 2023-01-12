@@ -1,5 +1,5 @@
 from django import forms
-from pybo.models import Question, Answer
+from furoot.models import Question, Answer
 
 
 class QuestionForm(forms.ModelForm):
