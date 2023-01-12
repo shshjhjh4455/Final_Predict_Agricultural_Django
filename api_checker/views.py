@@ -7,6 +7,7 @@ from .models import Result
 from datetime import date
 from time import localtime, time
 
+
 # 예측하는 페이지 전에 보여주는 페이지.
 def predict_price(days):
 
@@ -54,21 +55,29 @@ def detail(request):
     tm= localtime(time())
 
     if not Result.objects.filter(date=today).exists():
+        pred_1 = int(predict_price(1)[0])
+        pred_2 = int(predict_price(2)[0])
+        pred_3 = int(predict_price(3)[0])
+        pred_4 = int(predict_price(4)[0])
         pred_5 = int(predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])
         pred_20 = int(predict_price(20)[0])
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
 
-        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_1=pred_1, pred_2=pred_2, pred_3=pred_3, pred_4=pred_4, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
     
     elif tm.tm_hour >= 16 and Result.objects.last().tm < 16:
+        pred_1 = int(predict_price(1)[0])
+        pred_2 = int(predict_price(2)[0])
+        pred_3 = int(predict_price(3)[0])
+        pred_4 = int(predict_price(4)[0])
         pred_5 =int( predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])
         pred_20 = int(predict_price(20)[0])
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
-        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_1=pred_1, pred_2=pred_2, pred_3=pred_3, pred_4=pred_4, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
 
     else:
         context = Result.objects.last()
