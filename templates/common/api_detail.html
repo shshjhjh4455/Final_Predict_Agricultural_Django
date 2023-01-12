@@ -10,6 +10,7 @@
             <tr>
                 <td type="text">
                     <font size="5em" color="green"> 입력한 면적값</font>
+<<<<<<< HEAD
                 </td>
                 <th>
                     <input type="text" id="area" name="area" value="{{area}}" readonly>
@@ -37,10 +38,43 @@
                         var result = pred_1 * output;
                         document.write(result);
                     </script>
+=======
+>>>>>>> main
+                </td>
+                <th>
+                    <input type="text" id="area" name="area" value="{{area}}" readonly>
+                </th>
+            </tr>
+            <td type="text">
+                <font size="5em" color="green">예상 생산량</font>
+            <th>
+                <input type="text" id="output" name="output" value="{{ output }}" readonly>
+            </th>
+            <tr>
+<<<<<<< HEAD
+                <th>2거래일 후 예상 가격</th>
+=======
+                <br>
+                <th>예상 가격</th>
+                <td>가격</td>
+                <td>예상 수익 확인하기</td>
+            </tr>
+
+            <tr>
+                <th>1일 후 예상 가격</th>
+                <td>{{ context.pred_1 }}</td>
+                <td>
+                    <script>
+                        var pred_1 = {{ context.pred_1 }};
+                        var output = {{ output }};
+                        var result = pred_1 * output;
+                        document.write(result);
+                    </script>
                 </td>
             </tr>
             <tr>
-                <th>2거래일 후 예상 가격</th>
+                <th>2일 후 예상 가격</th>
+>>>>>>> main
                 <td>{{ context.pred_2 }}</td>
                 <td>
                     <script>
