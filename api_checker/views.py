@@ -4,7 +4,6 @@ import json
 import pandas as pd
 import pickle
 import numpy as np
-import datetime
 from django.shortcuts import render
 from .models import Result
 from datetime import date
