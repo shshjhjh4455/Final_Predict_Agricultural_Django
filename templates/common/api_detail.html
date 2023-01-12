@@ -20,7 +20,6 @@
             <th>
                 <input type="text" id="output" name="output" value="{{ output }}" readonly>
             </th>
-            </td>
             <tr>
                 <br>
                 <th>예상 가격</th>
@@ -137,22 +136,198 @@
                 </td>
             </tr>
         </table>
+        <th>
+            금일 16시를 기준으로 금일 데이터가 반영됩니다. (*예시: 1/12일 3시에 생성된 그래프는 1/11일 기준입니다.)
+        </th>
     </div>
 </div>
-<div class="d-flex justify-content-center mb-2">
-
-<div class="d-flex justify-content-end">
-    <a href="{% url 'output:predict' %}">
-        <button type="button" class="btn btn-primary">면적 재입력하기</button></a>
-
-
-
-
-
-
-
+<br>
+<table>
+    <tr>
+        <div class="d-flex justify-content-center mb-2">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'output:predict' %}">
+                    <button type="button" class="btn btn-primary">면적 재입력하기</button></a>
+            </div>
+        </div>
+        <br>
 
 
+        <!-- 4. 사이트 html 하단 figure 태그 -->
+        <div class="highcharts-figure">
+            <div id="container1"></div>
+        </div>
+        <!-- 6. script -->
+        <script>
+            var arr = new Array();
+            for (var i = 1; i < 6; i++) {
+                arr.push(i);
+            }
+            Highcharts.chart('container1', {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: '일주일 가격 동향'
+                },
+                subtitle: {
+                    text: '최근 일주일간 가격 현황'
+                },
+                xAxis: {
+                    categories: arr
+                },
+                yAxis: {
+                    title: {
+                        text: 'Price'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '(원)';
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Price',
+                    marker: {
+                        symbol: 'diamond'
+                    },
+                    data: {{ item_5 }}
 
+      }]
+    });
+        </script>
+    </tr>
+    <br>
+    <tr>
+        <!-- 4. 사이트 html 하단 figure 태그 -->
+        <figure class="highcharts-figure">
+            <div id="container2"></div>
+        </figure>
 
-        {% endblock %}
+        <!-- 6. script -->
+        <script>
+            var arr1 = new Array();
+            for (var i = 1; i < 21; i++) {
+                arr1.push(i);
+            }
+            Highcharts.chart('container2', {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: '한 달 가격 동향'
+                },
+                subtitle: {
+                    text: '최근 한 달 가격 현황'
+                },
+                xAxis: {
+                    categories: arr1
+                },
+                yAxis: {
+                    title: {
+                        text: 'Price'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '(원)';
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Price',
+                    marker: {
+                        symbol: 'diamond'
+                    },
+                    data: {{ item_20 }}
+
+      }]
+    });
+        </script>
+    </tr>
+    <br>
+    <!-- 4. 사이트 html 하단 figure 태그 -->
+    <figure class="highcharts-figure">
+        <div id="container3"></div>
+    </figure>
+
+    <!-- 6. script -->
+    <script>
+        var arr2 = new Array();
+        for (var i = 1; i < 366; i++) {
+            arr2.push(i);
+        }
+        Highcharts.chart('container3', {
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: '일 년 가격 동향'
+            },
+            subtitle: {
+                text: '최근 일 년간 가격 현황'
+            },
+            xAxis: {
+                categories: arr2
+            },
+            yAxis: {
+                title: {
+                    text: 'Price'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '(원)';
+                    }
+                }
+            },
+            tooltip: {
+                crosshairs: true,
+                shared: true
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        radius: 4,
+                        lineColor: '#666666',
+                        lineWidth: 1
+                    }
+                }
+            },
+            series: [{
+                name: 'Price',
+                marker: {
+                    symbol: 'diamond'
+                },
+                data: {{ item_365 }}
+
+      }]
+    });
+    </script>
+</table>
+
+{% endblock %}
