@@ -119,9 +119,9 @@ def create_candles(df, group_sizes):
 
 
 def get_candle_df():
-    candles = create_candles(check_api(), [5, 10, 20, 60, 120])
-    candle_df_5, candle_df_10, candle_df_20, candle_df_60, candle_df_120 = (
-        candles[size] for size in [5, 10, 20, 60, 120]
+    candles = create_candles(check_api(), [1, 2, 3, 4, 5, 10, 20, 60, 120])
+    candle_df_1, candle_df_2, candle_df_3, candle_df_4, candle_df_5, candle_df_10, candle_df_20, candle_df_60, candle_df_120 = (
+        candles[size] for size in [1, 2, 3, 4, 5, 10, 20, 60, 120]
     )
 
     candle_df_lasts = {key: df.iloc[-1] for key, df in candles.items()}
