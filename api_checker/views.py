@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from .api import get_candle_df, check_api
-from .api import get_candle_df, make_chart
-from .api import get_candle_df, make_chart
 import pandas as pd
 import pickle
 import os
@@ -59,10 +57,10 @@ def detail(request):
     today = date.today()
     tm= localtime(time())
 
-    for root, dirs, files in os.walk("/static/images"):
-        for f in files:
-            if f == "price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png":
-                chart = make_chart()
+    # for root, dirs, files in os.walk("/static/images"):
+    #     for f in files:
+    #         if f == "price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png":
+    #             chart = make_chart()
 
     if not Result.objects.filter(date=today).exists():
         pred_5 = int(predict_price(5)[0])
@@ -84,3 +82,12 @@ def detail(request):
     else:
         context = Result.objects.last()
     return render(request, 'common/api_detail.html', {'context': context})
+
+def chart_5days(request):
+    df= check_api()
+    df_5= df.tail(5)
+    val1= df_5['가격'].to_list()
+    context={
+        "val1":val1,
+    }
+    return render(request, 'common/chart_5.html', context)
