@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from furoot.views import base_views
+from pybo.views import base_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("furoot/", include("furoot.urls")),
+    path("pybo/", include("pybo.urls")),
     path("common/", include("common.urls")),
     path("recommend/", include("recommend.urls")),
     path("output/", include("output.urls")),
