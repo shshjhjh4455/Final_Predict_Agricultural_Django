@@ -130,3 +130,29 @@ def get_candle_df():
         df = df.T.dropna()
 
     return candle_df_lasts
+<<<<<<< HEAD
+=======
+
+def make_chart() : 
+    plt.rcParams["font.family"] = "Malgun Gothic"
+
+    plt.figure(figsize=(27,9))
+
+    plt.subplot(1,3,1)
+    plt.plot(check_api().index.to_list()[:5], check_api()["가격"].to_list()[:5], color = "red", label = "가격 (원)", marker = "o", linestyle = "--")
+    plt.title("5일 간 배추 가격")
+    plt.legend()
+
+    plt.subplot(1,3,2)
+    plt.plot(check_api().index.to_list()[:20], check_api()["가격"].to_list()[:20], color = "gold", label = "가격 (원)", marker = "o", linestyle = "--")
+    plt.xticks(rotation=45)
+    plt.title("20일 간 배추 가격")
+    plt.legend()
+
+    plt.subplot(1,3,3)
+    plt.plot(check_api().index.to_list(), check_api()["가격"].to_list(), color = "green", label = "가격 (원)", marker = "o", linestyle = "--")
+    plt.title("1년 간 배추 가격")
+    plt.legend()
+
+    plt.savefig("./static/images/price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png")
+>>>>>>> parent of 2ba223b8 (차트 띄우기2)
