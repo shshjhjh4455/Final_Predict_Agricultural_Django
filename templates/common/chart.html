@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+<!-- index.html -->
+{% load static %} 
+<html>
+<head>
+<script>
+window.onload = function () {
+  var chart= new CanvasJS.Chart("chartContainer", {
+    theme: "light2",
+    title: {
+      text: "Step Count Over a Week"
+    },
+    axisY: {
+      title: "Number of Steps",
+      stripLines: [{
+        value: 10000,
+        label: "Goal"
+      }]
+    },
+    data: [{
+      type: "line",
+      yValueFormatString: "#,### Steps",
+      dataPoints: {{ stepcount|safe }}
+    }]
+  });
+  chart.render();
+}
+</script>    
+</head>
+<body>
+    <div id="chartContainer" style="width: 100%; height: 360px;"></div>
+    <script src="{% static 'canvasjs.min.js' %}"></script>
+</body>
+</html>                              

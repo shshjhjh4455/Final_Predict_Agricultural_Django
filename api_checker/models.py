@@ -4,6 +4,16 @@ from django.db import models
 class Result(models.Model):
     date = models.DateField()
     tm= models.IntegerField(default=0)
+    item_1 = models.IntegerField(default=0)
+    item_2 = models.IntegerField(default=0)
+    item_3 = models.IntegerField(default=0)
+    item_4 = models.IntegerField(default=0)
+    item_5 = models.IntegerField(default=0)
+    item_10 = models.IntegerField(default=0)
+    item_20 = models.IntegerField(default=0)
+    item_60 = models.IntegerField(default=0)
+    item_120 = models.IntegerField(default=0)
+    
     area = models.IntegerField(default=0)
     pred_1 = models.IntegerField()
     pred_2 = models.IntegerField()
@@ -14,3 +24,4 @@ class Result(models.Model):
     pred_20 = models.IntegerField()
     pred_60 = models.IntegerField()
     pred_120 = models.IntegerField()
+     

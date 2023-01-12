@@ -10,6 +10,7 @@ from common.models import UserInfo
 from .forms import apicheckerForm
 from output.models import PredictionOutput
 from django.contrib.auth.decorators import login_required
+from .api import check_api
 
 
 # 예측하는 페이지 전에 보여주는 페이지.
@@ -23,7 +24,11 @@ def predict_price(days):
     scaler2 = pickle.load(open("model/price_candle_scaler2_{}.pkl".format(days), "rb"))
 
     # load df
-    candle_df_lasts = get_candle_df()
+    candle_df_lasts = get_candle_df().candle_df_lasts
+
+    df = get_candle_df().df
+
+    globals()[f"item_{days}"] = df.tail(days)
 
     # Select the last `days` days of data
     candle_df_last_x = candle_df_lasts[days]
@@ -49,7 +54,7 @@ def predict_price(days):
     y_pred = scaler2.inverse_transform(y_pred)
 
     # Return the predicted values
-    return y_pred
+    return y_pred, globals()[f"item_{days}"]
 
 
 @login_required(login_url="common:login")
@@ -62,19 +67,25 @@ def detail(request):
 
         obj = PredictionOutput.objects.last()
 
-        pred_1 = int(predict_price(1)[0])
-        pred_2 = int(predict_price(2)[0])
-        pred_3 = int(predict_price(3)[0])
-        pred_4 = int(predict_price(4)[0])
-        pred_5 = int(predict_price(5)[0])
-        pred_10 = int(predict_price(10)[0])
-        pred_20 = int(predict_price(20)[0])
-        pred_60 = int(predict_price(60)[0])
-        pred_120 = int(predict_price(120)[0])
+        pred_list = [1, 2, 3, 4, 5, 10, 20, 60, 120]
+        for i in pred_list:
+            globals()[f"pred_{i}"] = int(predict_price.y_pred(i)[0])
+
+        for i in pred_list:
+            globals()[f"item_{i}"] = predict_price.__getattribute__(f"item_{i}")
 
         context = Result.objects.create(
             date=today,
             tm=tm.tm_hour,
+            item_1=item_1,
+            item_2=item_2,
+            item_3=item_3,
+            item_4=item_4,
+            item_5=item_5,
+            item_10=item_10,
+            item_20=item_20,
+            item_60=item_60,
+            item_120=item_120,
             pred_1=pred_1,
             pred_2=pred_2,
             pred_3=pred_3,
@@ -86,18 +97,25 @@ def detail(request):
             pred_120=pred_120,
         )
     elif tm.tm_hour >= 16 and Result.objects.last().tm < 16:
-        pred_1 = int(predict_price(1)[0])
-        pred_2 = int(predict_price(2)[0])
-        pred_3 = int(predict_price(3)[0])
-        pred_4 = int(predict_price(4)[0])
-        pred_5 = int(predict_price(5)[0])
-        pred_10 = int(predict_price(10)[0])
-        pred_20 = int(predict_price(20)[0])
-        pred_60 = int(predict_price(60)[0])
-        pred_120 = int(predict_price(120)[0])
+
+        for i in pred_list:
+            globals()[f"pred_{i}"] = int(predict_price.y_pred(i)[0])
+
+        for i in pred_list:
+            globals()[f"item_{i}"] = predict_price.__getattribute__(f"item_{i}")
+
         context = Result.objects.create(
             date=today,
             tm=tm.tm_hour,
+            item_1=item_1,
+            item_2=item_2,
+            item_3=item_3,
+            item_4=item_4,
+            item_5=item_5,
+            item_10=item_10,
+            item_20=item_20,
+            item_60=item_60,
+            item_120=item_120,
             pred_1=pred_1,
             pred_2=pred_2,
             pred_3=pred_3,
