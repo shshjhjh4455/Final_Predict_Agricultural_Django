@@ -8,5 +8,3 @@ class Result(models.Model):
     pred_20 = models.IntegerField()
     pred_60 = models.IntegerField()
     pred_120 = models.IntegerField()
-
-
