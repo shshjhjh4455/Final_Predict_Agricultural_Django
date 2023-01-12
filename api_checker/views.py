@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .api import get_candle_df, make_chart
+from .api import get_candle_df, make_chart, check_api
 import pandas as pd
 import pickle
 import datetime
@@ -55,12 +55,18 @@ def index(request):
 def detail(request):
     today = date.today()
     tm= localtime(time())
+    dates = str(check_api().index[-1].strftime("%Y_%m_%d"))
+    paths = "/static/images"
+    file_name = "/price_baechoo_"
 
-    for root, dirs, files in os.walk("/static/images"):
+    # if not os.path.isfile(paths+dates+".png") : 
+    #     chart = make_chart()
+
+    for root, dirs, files in os.walk(paths):
         for f in files:
-            if f == "price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png":
+            if not f == file_name:
                 chart = make_chart()
-
+                
     if not Result.objects.filter(date=today).exists():
         pred_1 = int(predict_price(1)[0])
         pred_2 = int(predict_price(2)[0])
