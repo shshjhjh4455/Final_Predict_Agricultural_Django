@@ -1,17 +1,24 @@
+<!-- y_p -->
+<!-- Path: templates/common/recommend.html -->
 {% extends "base.html" %}
 {% block content %}
-<form method="post">{% csrf_token %}
-<div class="row justify-content-center mb-2">
-    <div class="col-md-4">
-        <br>
-        <br>
-        <div class="card" >
-            <div class="card-body">
-                <h5 class="card-title">예측하기</h5>
-                <p class="card-text">{{price}}</p>
-                <a href="{% url 'api_checker:detail'%}" class="btn btn-primary">>> 자세히</a>
+<!-- y_p 값을 표시 -->
+<div class="container my-3">
+    <form method="post" action="{% url 'api_checker:detail' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include "form_errors.html" %}
+        <!-- 면적 : {{user_info.area}} -->
+        <div class="form-group">
+            <label for="area">면적</label>
+            <input type="text" class="form-control" id="area" name="area" value="{{user_info.area}}">
+            <div> ※ 면적 값을 수정하실 수 있습니다. </div>
+            <!-- 제출 버튼 -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">예측값 확인하기</button>
             </div>
+            <br>
         </div>
-    </div>
+    </form>
 </div>
 {% endblock %}

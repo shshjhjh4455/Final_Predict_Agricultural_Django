@@ -3,6 +3,7 @@ from django.db import models
 class Result(models.Model):
     date = models.DateField()
     tm= models.IntegerField(default=0)
+    area = models.IntegerField()
     pred_1 = models.IntegerField()
     pred_2 = models.IntegerField()
     pred_3 = models.IntegerField()
