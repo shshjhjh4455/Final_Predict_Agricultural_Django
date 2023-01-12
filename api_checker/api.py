@@ -152,4 +152,8 @@ def make_chart() :
     plt.title("1년 간 배추 가격")
     plt.legend()
 
+<<<<<<< HEAD
     plt.savefig("./static/images/price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png")
+=======
+    plt.savefig("./static/images/price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png")
+>>>>>>> parent of 2ba223b8 (차트 띄우기2)
