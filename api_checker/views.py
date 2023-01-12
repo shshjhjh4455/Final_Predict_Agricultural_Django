@@ -68,6 +68,9 @@ def detail(request):
     today = date.today()
     tm = localtime(time())
 
+    user = request.user
+    user_info = UserInfo.objects.get(user=user)
+
     if not Result.objects.filter(date=today).exists():
         pred_1 = int(predict_price(1)[0])
         pred_2 = int(predict_price(2)[0])
@@ -131,5 +134,8 @@ def detail(request):
     return render(
         request,
         "common/api_detail.html",
-        {"context": context, "user_info": user_info},
+        {
+            "context": context,
+            "user_info": user_info,
+        },
     )
