@@ -1,15 +1,11 @@
 from django.shortcuts import render
 from .api import get_candle_df
-import json
 import pandas as pd
 import pickle
-import numpy as np
-import datetime
 from django.shortcuts import render
 from .models import Result
 from datetime import date
-from django.http import HttpResponse
-from django.template.loader import render_to_string
+from time import localtime, time
 
 # 예측하는 페이지 전에 보여주는 페이지.
 def predict_price(days):
@@ -55,6 +51,8 @@ def index(request):
 
 def detail(request):
     today = date.today()
+    tm= localtime(time())
+
     if not Result.objects.filter(date=today).exists():
         pred_5 = int(predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])
@@ -62,7 +60,16 @@ def detail(request):
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
 
-        context = Result.objects.create(date=today,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+    
+    elif tm.tm_hour >= 16 and Result.objects.last().tm < 16:
+        pred_5 =int( predict_price(5)[0])
+        pred_10 = int(predict_price(10)[0])
+        pred_20 = int(predict_price(20)[0])
+        pred_60 = int(predict_price(60)[0])
+        pred_120 = int(predict_price(120)[0])
+        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+
     else:
-        context = Result.objects.filter(date=today).first()
+        context = Result.objects.last()
     return render(request, 'common/api_detail.html', {'context': context})
