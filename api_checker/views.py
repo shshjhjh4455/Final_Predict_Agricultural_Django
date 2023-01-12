@@ -87,7 +87,9 @@ def chart_5days(request):
     df= check_api()
     df_5= df.tail(5)
     val1= df_5['가격'].to_list()
+    idx1 = df_5.index.to_list()
     context={
         "val1":val1,
+        "idx1":idx1,
     }
     return render(request, 'common/chart_5.html', context)
