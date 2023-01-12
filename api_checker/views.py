@@ -109,14 +109,6 @@ def detail(request):
     today = date.today()
     tm= localtime(time())
 
-<<<<<<< HEAD
-=======
-    for root, dirs, files in os.walk("/static/images"):
-        for f in files:
-            if f == "price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png":
-                chart = make_chart()
-
->>>>>>> parent of 2ba223b8 (차트 띄우기2)
     if not Result.objects.filter(date=today).exists():
         pred_5 = int(predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])

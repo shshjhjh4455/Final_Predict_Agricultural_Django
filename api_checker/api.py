@@ -130,8 +130,6 @@ def get_candle_df():
         df = df.T.dropna()
 
     return candle_df_lasts
-<<<<<<< HEAD
-=======
 
 def make_chart() : 
     plt.rcParams["font.family"] = "Malgun Gothic"
@@ -155,4 +153,3 @@ def make_chart() :
     plt.legend()
 
     plt.savefig("./static/images/price_baechoo_"+str(datetime.datetime.today().strftime("%Y_%m_%d"))+".png")
->>>>>>> parent of 2ba223b8 (차트 띄우기2)
