@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <!-- ---------------------- [edit] ------------------------ -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-
 <div class="row justify-content-center mb-2">
     <div class="col-md-12">
         <table class="table">
@@ -28,9 +26,11 @@
                 <td>{{ context.pred_120 }}</td>
             </tr>
         </table>
+        <div> ※ 전날을 기준으로 예상한 가격입니다. </div>
+        <div> ※ 익일 오후 4시가 지나면 익일 가격이 반영됩니다. </div>
     </div>
 </div>
-<div class="d-flex justify-content-center mb-2">
+
 
     <!-- -------------------------------------------------------- -->
     {% endblock %}
