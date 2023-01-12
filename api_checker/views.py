@@ -9,6 +9,7 @@ from time import localtime, time
 from common.models import UserInfo
 from .forms import apicheckerForm
 from output.models import PredictionOutput
+from django.contrib.auth.decorators import login_required
 
 
 # 예측하는 페이지 전에 보여주는 페이지.
@@ -51,6 +52,7 @@ def predict_price(days):
     return y_pred
 
 
+@login_required(login_url="common:login")
 def detail(request):
 
     today = date.today()
@@ -83,11 +85,7 @@ def detail(request):
             pred_60=pred_60,
             pred_120=pred_120,
         )
-
     elif tm.tm_hour >= 16 and Result.objects.last().tm < 16:
-
-        obj = PredictionOutput.objects.last()
-
         pred_1 = int(predict_price(1)[0])
         pred_2 = int(predict_price(2)[0])
         pred_3 = int(predict_price(3)[0])
@@ -97,7 +95,6 @@ def detail(request):
         pred_20 = int(predict_price(20)[0])
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
-
         context = Result.objects.create(
             date=today,
             tm=tm.tm_hour,
