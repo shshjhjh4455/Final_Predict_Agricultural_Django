@@ -54,6 +54,9 @@ def predict_price(days):
 def index(request):
     return render(request, "common/predict.html")
 
+def chart_index(request):
+    return render(request, "common/chart_index.html")
+
 # def detail(request):
 #     date_string = value.strftime("%Y-%m-%d")
 #     date_object = datetime.date.fromisoformat(date_string)
@@ -126,16 +129,28 @@ def detail(request):
         context = Result.objects.last()
     return render(request, 'common/api_detail.html', {'context': context})
 
-def chart(request):
+def chart_5days(request):
     df= check_api()
     df_5= df.tail(5)
-    df_20= df.tail(20)
     val1= df_5['가격'].to_list()
-    val2= df_20['가격'].to_list()
-    val3= df['가격'].to_list()
     context={
         "val1":val1,
+    }
+    return render(request, 'common/chart_5.html', context)
+
+def chart_20days(request):
+    df= check_api()
+    df_20= df.tail(20)
+    val2= df_20['가격'].to_list()
+    context={
         "val2":val2,
+    }
+    return render(request, 'common/chart_20.html', context)
+
+def chart_365days(request):
+    df= check_api()
+    val3= df['가격'].to_list()
+    context={
         "val3":val3,
     }
-    return render(request, 'common/api_chart.html', context)
+    return render(request, 'common/chart_365.html', context)

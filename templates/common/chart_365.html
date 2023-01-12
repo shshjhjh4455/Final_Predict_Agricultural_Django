@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 1. static 사용 -->
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 2. 사이트 html 하단 script 태그 위치 -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    
+    <!-- 3. css 속성 가져오기 -->
+    <link rel="stylesheet" href="{% static 'chart/css/line.css' %}">
+</head>
+<body>
+    <!-- 4. 사이트 html 하단 figure 태그 -->
+	<figure class="highcharts-figure">
+        <div id="container"></div>
+        <p class="highcharts-description">
+            금일 16시를 기준으로 금일 데이터가 반영됩니다.
+            (*예시: 1/12일 3시에 생성된 그래프는 1/11일 기준입니다.)
+        </p>
+      </figure>
+      
+      <!-- 5. <script src="{% static 'chart/js/line.js' %}" ></script> -->
+      <!-- 6. script -->
+      <script>
+         var arr1 = new Array();
+         for (var i=1; i<366; i++){
+            arr.push(i);
+         }
+        Highcharts.Chart('container',{
+          chart: {
+            type: 'spline'
+          },
+          title: {
+            text: '일 년 동향'
+          },
+          subtitle: {
+            text: '최근 일 년'
+          },
+          xAxis: {
+            categories: arr1
+          },
+          yAxis: {
+            title: {
+              text: 'Price'
+            },
+            labels: {
+              formatter: function () {
+                return this.value;
+              }
+            }
+          },
+          tooltip: {
+            crosshairs: true,
+            shared: true
+          },
+          plotOptions: {
+            spline: {
+              marker: {
+                radius: 4,
+                lineColor: '#666666',
+                lineWidth: 1
+              }
+            }
+          },
+          series: [{
+            name: 'Price',
+            marker: {
+              symbol: 'diamond'
+            },
+            data: {{val3}}
+          }]
+        });
+      </script>
+</body>
+</html>

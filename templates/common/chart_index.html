@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post">{% csrf_token %}
+<div class="row justify-content-center mb-2">
+    <div class="col-md-4">
+        <br>
+        <br>
+        <div class="card" >
+            <div class="card-body">
+                <h5 class="card-title">일주일 가격 동향</h5>
+                <a href="{% url 'api_checker:chart_5'%}" class="btn btn-primary">>> 자세히</a>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">한 달 가격 동향</h5>
+                <a href="{% url 'api_checker:chart_20'%}" class="btn btn-primary">>> 자세히</a>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">일 년 가격 동향</h5>
+                <a href="{% url 'api_checker:chart_365'%}" class="btn btn-primary">>> 자세히</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
