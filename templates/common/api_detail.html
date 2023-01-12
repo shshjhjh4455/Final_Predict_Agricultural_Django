@@ -9,62 +9,132 @@
             <!-- pred 값 출력 -->
             <tr>
                 <td type="text">
-                    <font size="5em" color="green">입력한 면적값.</font>
+                    <font size="5em" color="green"> 입력한 면적값</font>
                 </td>
                 <th>
-                    <!-- 사용자로부터 입력값을 받을 예정-->
-                    <input type="text" class="form-control" id="area" name="area" value="{{user_info.area}}">
+                    <input type="text" id="area" name="area" value="{{area}}" readonly>
                 </th>
             </tr>
+            <td type="text">
+                <font size="5em" color="green">예상 생산량</font>
+            <th>
+                <input type="text" id="output" name="output" value="{{ output }}" readonly>
+            </th>
+            </td>
             <tr>
+                <br>
                 <th>예상 가격</th>
                 <td>가격</td>
                 <td>예상 수익 확인하기</td>
             </tr>
+
             <tr>
                 <th>1일 후 예상 가격</th>
                 <td>{{ context.pred_1 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_1 = {{ context.pred_1 }};
+                        var output = {{ output }};
+                        var result = pred_1 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>2일 후 예상 가격</th>
                 <td>{{ context.pred_2 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_2 = {{ context.pred_2 }};
+                        var output = {{ output }};
+                        var result = pred_2 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>3일 후 예상 가격</th>
                 <td>{{ context.pred_3 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_3 = {{ context.pred_3 }};
+                        var output = {{ output }};
+                        var result = pred_3 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>4일 후 예상 가격</th>
                 <td>{{ context.pred_4 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_4 = {{ context.pred_4 }};
+                        var output = {{ output }};
+                        var result = pred_4 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>5일 후 예상 가격</th>
                 <td>{{ context.pred_5 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_5 = {{ context.pred_5 }};
+                        var output = {{ output }};
+                        var result = pred_5 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>10일 후 예상 가격</th>
                 <td>{{ context.pred_10 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_10 = {{ context.pred_10 }};
+                        var output = {{ output }};
+                        var result = pred_10 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>20일 후 예상 가격</th>
                 <td>{{ context.pred_20 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_20 = {{ context.pred_20 }};
+                        var output = {{ output }};
+                        var result = pred_20 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>60일 후 예상 가격</th>
                 <td>{{ context.pred_60 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_60 = {{ context.pred_60 }};
+                        var output = {{ output }};
+                        var result = pred_60 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>120일 후 예상 가격</th>
                 <td>{{ context.pred_120 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_120 = {{ context.pred_120 }};
+                        var output = {{ output }};
+                        var result = pred_120 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
         </table>
     </div>
