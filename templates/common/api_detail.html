@@ -8,69 +8,326 @@
         <table class="table">
             <!-- pred 값 출력 -->
             <tr>
-                <td type="text" ><font size="5em" color="green">면적을 입력하세요.</font></td>
-                <th>
-                <!-- 사용자로부터 입력값을 받을 예정-->
-                <input type="text" class="form-control" id="area" name="area" value="{{user_info.area}}">
-                </th>
-                <td class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">확인하기</button>
+                <td type="text">
+                    <font size="5em" color="green"> 입력한 면적값</font>
                 </td>
+                <th>
+                    <input type="text" id="area" name="area" value="{{area}}" readonly>
+                </th>
             </tr>
+            <td type="text">
+                <font size="5em" color="green">예상 생산량</font>
+            <th>
+                <input type="text" id="output" name="output" value="{{ output }}" readonly>
+            </th>
             <tr>
+                <br>
                 <th>예상 가격</th>
                 <td>가격</td>
-                <td>금액 확인하기</td>
+                <td>예상 수익 확인하기</td>
             </tr>
+
             <tr>
                 <th>1거래일 후 예상 가격</th>
                 <td>{{ context.pred_1 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_1 = {{ context.pred_1 }};
+                        var output = {{ output }};
+                        var result = pred_1 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>2거래일 후 예상 가격</th>
                 <td>{{ context.pred_2 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_2 = {{ context.pred_2 }};
+                        var output = {{ output }};
+                        var result = pred_2 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>3거래일 후 예상 가격</th>
                 <td>{{ context.pred_3 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_3 = {{ context.pred_3 }};
+                        var output = {{ output }};
+                        var result = pred_3 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>4거래일 후 예상 가격</th>
                 <td>{{ context.pred_4 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_4 = {{ context.pred_4 }};
+                        var output = {{ output }};
+                        var result = pred_4 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>5거래일 후 예상 가격</th>
                 <td>{{ context.pred_5 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_5 = {{ context.pred_5 }};
+                        var output = {{ output }};
+                        var result = pred_5 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>10거래일 후 예상 가격</th>
                 <td>{{ context.pred_10 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_10 = {{ context.pred_10 }};
+                        var output = {{ output }};
+                        var result = pred_10 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>20거래일 후 예상 가격</th>
                 <td>{{ context.pred_20 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_20 = {{ context.pred_20 }};
+                        var output = {{ output }};
+                        var result = pred_20 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>60거래일 후 예상 가격</th>
                 <td>{{ context.pred_60 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_60 = {{ context.pred_60 }};
+                        var output = {{ output }};
+                        var result = pred_60 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
             <tr>
                 <th>120거래일 후 예상 가격</th>
                 <td>{{ context.pred_120 }}</td>
-                <td></td>
+                <td>
+                    <script>
+                        var pred_120 = {{ context.pred_120 }};
+                        var output = {{ output }};
+                        var result = pred_120 * output;
+                        document.write(result);
+                    </script>
+                </td>
             </tr>
         </table>
+        <th>
+            금일 16시를 기준으로 금일 데이터가 반영됩니다. (*예시: 1/12일 3시에 생성된 그래프는 1/11일 기준입니다.)
+        </th>
     </div>
 </div>
-<div class="d-flex justify-content-center mb-2">
+<br>
+<table>
+    <tr>
+        <div class="d-flex justify-content-center mb-2">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'output:predict' %}">
+                    <button type="button" class="btn btn-primary">면적 재입력하기</button></a>
+            </div>
+        </div>
+        <br>
 
-    <!-- -------------------------------------------------------- -->
-    {% endblock %}
+
+        <!-- 4. 사이트 html 하단 figure 태그 -->
+        <div class="highcharts-figure">
+            <div id="container1"></div>
+        </div>
+        <!-- 6. script -->
+        <script>
+            var arr = new Array();
+            for (var i = 1; i < 6; i++) {
+                arr.push(i);
+            }
+            Highcharts.chart('container1', {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: '일주일 가격 동향'
+                },
+                subtitle: {
+                    text: '최근 일주일간 가격 현황'
+                },
+                xAxis: {
+                    categories: arr
+                },
+                yAxis: {
+                    title: {
+                        text: 'Price'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '(원)';
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Price',
+                    marker: {
+                        symbol: 'diamond'
+                    },
+                    data: {{ item_5 }}
+
+      }]
+    });
+        </script>
+    </tr>
+    <br>
+    <tr>
+        <!-- 4. 사이트 html 하단 figure 태그 -->
+        <figure class="highcharts-figure">
+            <div id="container2"></div>
+        </figure>
+
+        <!-- 6. script -->
+        <script>
+            var arr1 = new Array();
+            for (var i = 1; i < 21; i++) {
+                arr1.push(i);
+            }
+            Highcharts.chart('container2', {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: '한 달 가격 동향'
+                },
+                subtitle: {
+                    text: '최근 한 달 가격 현황'
+                },
+                xAxis: {
+                    categories: arr1
+                },
+                yAxis: {
+                    title: {
+                        text: 'Price'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '(원)';
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Price',
+                    marker: {
+                        symbol: 'diamond'
+                    },
+                    data: {{ item_20 }}
+
+      }]
+    });
+        </script>
+    </tr>
+    <br>
+    <!-- 4. 사이트 html 하단 figure 태그 -->
+    <figure class="highcharts-figure">
+        <div id="container3"></div>
+    </figure>
+
+    <!-- 6. script -->
+    <script>
+        var arr2 = new Array();
+        for (var i = 1; i < 366; i++) {
+            arr2.push(i);
+        }
+        Highcharts.chart('container3', {
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: '일 년 가격 동향'
+            },
+            subtitle: {
+                text: '최근 일 년간 가격 현황'
+            },
+            xAxis: {
+                categories: arr2
+            },
+            yAxis: {
+                title: {
+                    text: 'Price'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '(원)';
+                    }
+                }
+            },
+            tooltip: {
+                crosshairs: true,
+                shared: true
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        radius: 4,
+                        lineColor: '#666666',
+                        lineWidth: 1
+                    }
+                }
+            },
+            series: [{
+                name: 'Price',
+                marker: {
+                    symbol: 'diamond'
+                },
+                data: {{ item_365 }}
+
+      }]
+    });
+    </script>
+</table>
+
+{% endblock %}
