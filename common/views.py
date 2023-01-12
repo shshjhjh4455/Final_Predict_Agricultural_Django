@@ -21,7 +21,7 @@ def signup(request):
                 user=user, phone=phone, area=area, location=location
             )
             auth_login(request, user)
-            return redirect("pybo:index")
+            return redirect("furoot:index")
     else:
         form = UserForm()
     return render(request, "common/signup.html", {"form": form})
@@ -33,7 +33,7 @@ def login(request):
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect("pybo:index")
+            return redirect("furoot:index")
     else:
         form = AuthenticationForm()
     return render(request, "common/login.html", {"form": form})
@@ -42,7 +42,7 @@ def login(request):
 # 로그아웃
 def logout(request):
     auth_logout(request)
-    return redirect("pybo:index")
+    return redirect("furoot:index")
 
 
 # 마이페이지에서는 로그인한 사용자의 정보와 common uer_info df를 보여줌

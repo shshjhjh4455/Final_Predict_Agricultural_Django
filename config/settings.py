@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "common.apps.CommonConfig",
-    "pybo.apps.PyboConfig",
+    "furoot.apps.furootConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
