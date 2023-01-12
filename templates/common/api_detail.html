@@ -7,68 +7,25 @@
     <div class="col-md-12">
         <table class="table">
             <!-- pred 값 출력 -->
-            <div class="mb-3">
-            <tr>
-                <!-- <img src="/static/images/price_baechoo_2023_01_11.png" alt="가격 동향" width="2000" height="650"> -->
-                <img id="myImage" alt="가격 동향" width="2000" height="650">
-                <td type="text" ><font size="5em" color="green">면적을 입력하세요.</font></td>
-                <th>
-                <!-- 사용자로부터 입력값을 받을 예정-->
-                <input type="text" class="form-control" id="area" name="area" value="{{user_info.area}}">
-                </th>
-                <td class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">확인하기</button>
-                </td>
-            </tr>
-            <tr>
-                <th>예상 가격</th>
-                <td>가격</td>
-                <td>금액 확인하기</td>
-            </tr>
-            <tr>
-                <th>1일 후 예상 가격</th>
-                <td>{{ context.pred_1 }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>2일 후 예상 가격</th>
-                <td>{{ context.pred_2 }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>3일 후 예상 가격</th>
-                <td>{{ context.pred_3 }}</td>
-                <td></td>
-            </tr>
-            <tr>
-                <th>4일 후 예상 가격</th>
-                <td>{{ context.pred_4 }}</td>
-                <td></td>
-            </tr>
             <tr>
                 <th>5일 후 예상 가격</th>
                 <td>{{ context.pred_5 }}</td>
-                <td></td>
             </tr>
             <tr>
                 <th>10일 후 예상 가격</th>
                 <td>{{ context.pred_10 }}</td>
-                <td></td>
             </tr>
             <tr>
                 <th>20일 후 예상 가격</th>
                 <td>{{ context.pred_20 }}</td>
-                <td></td>
             </tr>
             <tr>
                 <th>60일 후 예상 가격</th>
                 <td>{{ context.pred_60 }}</td>
-                <td></td>
             </tr>
             <tr>
                 <th>120일 후 예상 가격</th>
                 <td>{{ context.pred_120 }}</td>
-                <td></td>
             </tr>
         </table>
     </div>
@@ -76,22 +33,4 @@
 <div class="d-flex justify-content-center mb-2">
 
     <!-- -------------------------------------------------------- -->
-{% endblock %}
-
-<script>
-    var currentTime = new Date().getHours();
-    var currentDate = new Date();
-    var yesterday = new Date(currentDate.getTime() - (24*60*60*1000));
-    // var monthName = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-    var formattedDay = ("0" + currentDate.getDate()).slice(-2);
-    var formattedYesDay = ("0" + yesterday.getDate()).slice(-2);
-    var formattedMonth = ("0" + currentDate.getMonth()).slice(-2);
-    var formattedYesMonth = ("0" + yesterday.getMonth()).slice(-2);
-    var yesterday_date = yesterday.getFullYear()+"_"+formattedYesMonth+"_"+formattedYesDay;
-    var today_date = currentDate.getFullYear()+"_"+formattedMonth+"_"+formattedDay;
-    if (currentTime < 16) {
-      document.getElementById("myImage").src = "../../static/images/price_baechoo_"+yesterday_date+".png";
-    } else {
-      document.getElementById("myImage").src = "../../static/images/price_baechoo_"+today_date+".png";
-    }
-</script>
+    {% endblock %}

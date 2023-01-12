@@ -6,7 +6,6 @@ from .forms import PredictForm
 import joblib
 import numpy as np
 
-
 # Create your views here.
 
 @login_required(login_url="common:login")
@@ -34,15 +33,17 @@ def predict(request):
                 scaler_t = joblib.load(t)
                 target_pred = scaler_t.inverse_transform(y_p.reshape(-1,1))
 
+            # if y_p == 1:
+            #     y_p = "배추 생산이 가능한 지역으로 예측됩니다."
+            # else:
+            #     y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
+
             context= {
                 "area":area,
                 "form":form,
                 "obj_test": int(target_pred[0]),
             }
-            
             return render(request, "common/result_output.html", context)
-
-           
     else:
         form = PredictForm()
         user = request.user

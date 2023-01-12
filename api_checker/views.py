@@ -1,14 +1,14 @@
 from django.shortcuts import render
-from .api import get_candle_df, make_chart, check_api
+from .api import get_candle_df
+import json
 import pandas as pd
 import pickle
-import datetime
-import os
+import numpy as np
 from django.shortcuts import render
 from .models import Result
 from datetime import date
-from time import localtime, time
-
+from time import time
+from time import localtime
 
 # 예측하는 페이지 전에 보여주는 페이지.
 def predict_price(days):
@@ -49,50 +49,79 @@ def predict_price(days):
     # Return the predicted values
     return y_pred
 
+
 def index(request):
     return render(request, "common/predict.html")
 
+# def detail(request):
+#     date_string = value.strftime("%Y-%m-%d")
+#     date_object = datetime.date.fromisoformat(date_string)
+#     if not Result.objects.filter(date=date_object).exists():
+#         pred_5 = predict_price(5)
+#         pred_10 = predict_price(10)
+#         pred_20 = predict_price(20)
+#         pred_60 = predict_price(60)
+#         pred_120 = predict_price(120)
+
+#         context = Result.objects.create(date=today,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+#     else:
+#         context = Result.objects.filter(date=today).first()
+#     return render(request, 'common/api_detail.html', {'context': context})
+
+# def detail(request):
+#     date_string = value
+#     date_object = datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+#     if not Result.objects.filter(date=date_object).exists():
+#         pred_5 = predict_price(5)
+#         pred_10 = predict_price(10)
+#         pred_20 = predict_price(20)
+#         pred_60 = predict_price(60)
+#         pred_120 = predict_price(120)
+
+#         context = Result.objects.create(date=date_object,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+#     else:
+#         context = Result.objects.filter
+
+
+# def detail(request):
+#     # date 다름 또는 시간이 4시를 넘거나 또는 생성된 객체가 없거나
+#     #today = datetime.datetime.now()
+#     #today_str= today.strftime('%Y-%m-%d')
+#     #obj= Result.objects.get(pk=1)
+
+#     # if not Result.objects.first().exists() or today_str != obj.date:
+#     #     pred_5 = predict_price(5)
+#     #     pred_10 = predict_price(10)
+#     #     pred_20 = predict_price(20)
+#     #     pred_60 = predict_price(60)
+#     #     pred_120 = predict_price(120)
+
+#     #     context = Result.objects.create(date=today_str,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+#     # else:
+#     #     context = Result.objects.filter(date=today_str).first()
+#     return render(request, 'common/api_detail.html')
 def detail(request):
     today = date.today()
     tm= localtime(time())
-    dates = str(check_api().index[-1].strftime("%Y_%m_%d"))
-    paths = "/static/images"
-    file_name = "/price_baechoo_"
 
-    # if not os.path.isfile(paths+dates+".png") : 
-    #     chart = make_chart()
-
-    for root, dirs, files in os.walk(paths):
-        for f in files:
-            if not f == file_name:
-                chart = make_chart()
-                
     if not Result.objects.filter(date=today).exists():
-        pred_1 = int(predict_price(1)[0])
-        pred_2 = int(predict_price(2)[0])
-        pred_3 = int(predict_price(3)[0])
-        pred_4 = int(predict_price(4)[0])
         pred_5 = int(predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])
         pred_20 = int(predict_price(20)[0])
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
 
-        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_1=pred_1, pred_2=pred_2, pred_3=pred_3, pred_4=pred_4, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
     
     elif tm.tm_hour >= 16 and Result.objects.last().tm < 16:
-        pred_1 = int(predict_price(1)[0])
-        pred_2 = int(predict_price(2)[0])
-        pred_3 = int(predict_price(3)[0])
-        pred_4 = int(predict_price(4)[0])
         pred_5 =int( predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])
         pred_20 = int(predict_price(20)[0])
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
-        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_1=pred_1, pred_2=pred_2, pred_3=pred_3, pred_4=pred_4, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
 
     else:
         context = Result.objects.last()
-
     return render(request, 'common/api_detail.html', {'context': context})
+
