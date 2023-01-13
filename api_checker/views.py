@@ -139,9 +139,9 @@ def detail(request):
         "common/api_detail.html",
         {
             "context": context,
-            "item_5": Result.objects.get(id=obj.id).item_5,
-            "item_20": Result.objects.get(id=obj.id).item_20,
-            "item_365": Result.objects.get(id=obj.id).item_365,
+            "item_5": Result.objects.last().item_5,
+            "item_20": Result.objects.last().item_20,
+            "item_365": Result.objects.last().item_365,
             "output": PredictionOutput.objects.get(id=obj.id).output,
             "area": PredictionOutput.objects.get(id=obj.id).area,
         },
