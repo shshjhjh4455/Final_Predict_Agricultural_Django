@@ -1,18 +1,21 @@
 from django.shortcuts import render
-from .api import get_candle_df, check_api
-import json
+from .api import get_candle_df
 import pandas as pd
 import pickle
-import numpy as np
 from django.shortcuts import render
 from .models import Result
 from datetime import date
-from time import time
-from time import localtime
+from time import localtime, time
+from common.models import UserInfo
+from .forms import apicheckerForm
+from output.models import PredictionOutput
+from django.contrib.auth.decorators import login_required
+from .api import check_api
+from .models import Result
 
 
 # 예측하는 페이지 전에 보여주는 페이지.
-def predict_price(days):
+def predict_price(days=1):
 
     # Load the model and scalers
     model = pickle.load(
@@ -22,7 +25,11 @@ def predict_price(days):
     scaler2 = pickle.load(open("model/price_candle_scaler2_{}.pkl".format(days), "rb"))
 
     # load df
-    candle_df_lasts = get_candle_df()
+    candle_df_lasts, df_orgin_list = get_candle_df()
+
+    item_5 = df_orgin_list[-5:]
+    item_20 = df_orgin_list[-20:]
+    item_365 = df_orgin_list
 
     # Select the last `days` days of data
     candle_df_last_x = candle_df_lasts[days]
@@ -48,109 +55,94 @@ def predict_price(days):
     y_pred = scaler2.inverse_transform(y_pred)
 
     # Return the predicted values
-    return y_pred
+    return y_pred, item_5, item_20, item_365
 
 
-def index(request):
-    return render(request, "common/predict.html")
-
-def chart_index(request):
-    return render(request, "common/chart_index.html")
-
-# def detail(request):
-#     date_string = value.strftime("%Y-%m-%d")
-#     date_object = datetime.date.fromisoformat(date_string)
-#     if not Result.objects.filter(date=date_object).exists():
-#         pred_5 = predict_price(5)
-#         pred_10 = predict_price(10)
-#         pred_20 = predict_price(20)
-#         pred_60 = predict_price(60)
-#         pred_120 = predict_price(120)
-
-#         context = Result.objects.create(date=today,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
-#     else:
-#         context = Result.objects.filter(date=today).first()
-#     return render(request, 'common/api_detail.html', {'context': context})
-
-# def detail(request):
-#     date_string = value
-#     date_object = datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
-#     if not Result.objects.filter(date=date_object).exists():
-#         pred_5 = predict_price(5)
-#         pred_10 = predict_price(10)
-#         pred_20 = predict_price(20)
-#         pred_60 = predict_price(60)
-#         pred_120 = predict_price(120)
-
-#         context = Result.objects.create(date=date_object,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
-#     else:
-#         context = Result.objects.filter
-
-
-# def detail(request):
-#     # date 다름 또는 시간이 4시를 넘거나 또는 생성된 객체가 없거나
-#     #today = datetime.datetime.now()
-#     #today_str= today.strftime('%Y-%m-%d')
-#     #obj= Result.objects.get(pk=1)
-
-#     # if not Result.objects.first().exists() or today_str != obj.date:
-#     #     pred_5 = predict_price(5)
-#     #     pred_10 = predict_price(10)
-#     #     pred_20 = predict_price(20)
-#     #     pred_60 = predict_price(60)
-#     #     pred_120 = predict_price(120)
-
-#     #     context = Result.objects.create(date=today_str,pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
-#     # else:
-#     #     context = Result.objects.filter(date=today_str).first()
-#     return render(request, 'common/api_detail.html')
+@login_required(login_url="common:login")
 def detail(request):
+
     today = date.today()
-    tm= localtime(time())
+    tm = localtime(time())
 
     if not Result.objects.filter(date=today).exists():
+
+        obj = PredictionOutput.objects.last()
+
+        pred_1 = int(predict_price(1)[0])
+        pred_2 = int(predict_price(2)[0])
+        pred_3 = int(predict_price(3)[0])
+        pred_4 = int(predict_price(4)[0])
         pred_5 = int(predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])
         pred_20 = int(predict_price(20)[0])
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
 
-        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
-    
+        item_5 = predict_price(1)[1]
+        item_20 = predict_price(1)[2]
+        item_365 = predict_price(1)[3]
+
+        context = Result.objects.create(
+            date=today,
+            tm=tm.tm_hour,
+            item_5=item_5,
+            item_20=item_20,
+            item_365=item_365,
+            pred_1=pred_1,
+            pred_2=pred_2,
+            pred_3=pred_3,
+            pred_4=pred_4,
+            pred_5=pred_5,
+            pred_10=pred_10,
+            pred_20=pred_20,
+            pred_60=pred_60,
+            pred_120=pred_120,
+        )
     elif tm.tm_hour >= 16 and Result.objects.last().tm < 16:
-        pred_5 =int( predict_price(5)[0])
+
+        pred_1 = int(predict_price(1)[0])
+        pred_2 = int(predict_price(2)[0])
+        pred_3 = int(predict_price(3)[0])
+        pred_4 = int(predict_price(4)[0])
+        pred_5 = int(predict_price(5)[0])
         pred_10 = int(predict_price(10)[0])
         pred_20 = int(predict_price(20)[0])
         pred_60 = int(predict_price(60)[0])
         pred_120 = int(predict_price(120)[0])
-        context = Result.objects.create(date=today, tm= tm.tm_hour, pred_5=pred_5, pred_10=pred_10, pred_20=pred_20, pred_60=pred_60, pred_120=pred_120)
+
+        item_5 = predict_price(1)[1]
+        item_20 = predict_price(1)[2]
+        item_365 = predict_price(1)[3]
+
+        context = Result.objects.create(
+            date=today,
+            tm=tm.tm_hour,
+            item_5=item_5,
+            item_20=item_20,
+            item_365=item_365,
+            pred_1=pred_1,
+            pred_2=pred_2,
+            pred_3=pred_3,
+            pred_4=pred_4,
+            pred_5=pred_5,
+            pred_10=pred_10,
+            pred_20=pred_20,
+            pred_60=pred_60,
+            pred_120=pred_120,
+        )
 
     else:
         context = Result.objects.last()
-    return render(request, 'common/api_detail.html', {'context': context})
-
-def chart_5days(request):
-    df= check_api()
-    df_5= df.tail(5)
-    val1= df_5['가격'].to_list()
-    context={
-        "val1":val1,
-    }
-    return render(request, 'common/chart_5.html', context)
-
-def chart_20days(request):
-    df= check_api()
-    df_20= df.tail(20)
-    val2= df_20['가격'].to_list()
-    context={
-        "val2":val2,
-    }
-    return render(request, 'common/chart_20.html', context)
-
-def chart_365days(request):
-    df= check_api()
-    val3= df['가격'].to_list()
-    context={
-        "val3":val3,
-    }
-    return render(request, 'common/chart_365.html', context)
+        obj = PredictionOutput.objects.last()
+    return render(
+        request,
+        "common/api_detail.html",
+        {
+            "context": context,
+            "item_5": Result.objects.get(id=obj.id).item_5,
+            "item_20": Result.objects.get(id=obj.id).item_20,
+            "item_365": Result.objects.get(id=obj.id).item_365,
+            "output": PredictionOutput.objects.get(id=obj.id).output,
+            "area": PredictionOutput.objects.get(id=obj.id).area,
+        },
+    )

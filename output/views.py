@@ -6,7 +6,9 @@ from .forms import PredictForm
 import joblib
 import numpy as np
 
+
 # Create your views here.
+
 
 @login_required(login_url="common:login")
 def predict(request):
@@ -14,12 +16,12 @@ def predict(request):
         form = PredictForm(request.POST)
         if form.is_valid():
             area = form.cleaned_data.get("area")
-            PredictionOutput.objects.create(area = area)
+            PredictionOutput.objects.create(area=area, output=0)
             obj = PredictionOutput.objects.last()
 
-            obj_list=[obj.area]
+            obj_list = [obj.area]
 
-            model_input_list = np.array(obj_list).reshape(1,-1)
+            model_input_list = np.array(obj_list).reshape(1, -1)
 
             with open("model/pred_xgb_output_with_area_sc_f.pkl", "rb") as f:
                 scaler_f = joblib.load(f)
@@ -31,19 +33,20 @@ def predict(request):
 
             with open("model/pred_xgb_output_with_area_sc_t.pkl", "rb") as t:
                 scaler_t = joblib.load(t)
-                target_pred = scaler_t.inverse_transform(y_p.reshape(-1,1))
+                target_pred = scaler_t.inverse_transform(y_p.reshape(-1, 1))
 
-            # if y_p == 1:
-            #     y_p = "배추 생산이 가능한 지역으로 예측됩니다."
-            # else:
-            #     y_p = "배추 생산이 불가능한 지역으로 예측됩니다."
-
-            context= {
-                "area":area,
-                "form":form,
-                "obj_test": int(target_pred[0]),
+            # PredictionOutput 에 int(target_pred[0]) 저장
+            PredictionOutput.objects.filter(id=obj.id).update(
+                output=int(target_pred[0])
+            )
+            context = {
+                "area": area,
+                "form": form,
+                "output": PredictionOutput.objects.get(id=obj.id).output,
             }
+
             return render(request, "common/result_output.html", context)
+
     else:
         form = PredictForm()
         user = request.user
@@ -51,6 +54,5 @@ def predict(request):
         context = {
             "user_info": user_info,
             "form": form,
-            "target_pred": None,
         }
         return render(request, "common/recommend_op.html", context)

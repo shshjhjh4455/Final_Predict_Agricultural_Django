@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'pybo:index' %}">
+        <a class="navbar-brand" href="{% url 'pybo:index' %}"></a>
         <!--이미지 아래에 넣기-->
-        <img src="/static/images/my_image.png" alt="푸릇" width="200" height="150"></a>
+        <a href="{% url 'pybo:index' %}">
+        <img src="/static/images/my_image.png" alt="푸릇" width="90" height="65"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,11 +25,9 @@
                     </a>
                     <!-- recommend page -->
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="nav-link" href="{% url 'recommend:predict' %}">추천</a></li>
+                        <li><a class="nav-link" href="{% url 'recommend:predict' %}">배추 재배 가능여부</a></li>
                         <!-- output page -->
-                        <li><a class="nav-link" href="{% url 'output:predict' %}">생산량</a></li>
-                        <!-- predictprice page -->
-                        <li><a class="nav-link" href="{% url 'predict:price' %}">가격예측</a></li>
+                        <li><a class="nav-link" href="{% url 'output:predict' %}">생산량 및 가격예측</a></li>
                     </ul>
                     <style>
                         .dropdown {
